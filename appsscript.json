@@ -1,0 +1,54 @@
+{
+  "timeZone": "America/New_York",
+  "runtimeVersion": "V8",
+  "dependencies": {
+    "enabledAdvancedServices": [
+      {
+        "userSymbol": "Gmail",
+        "version": "v1",
+        "serviceId": "gmail"
+      }
+    ]
+  },
+  "exceptionLogging": "STACKDRIVER",
+  "oauthScopes": [
+    "https://www.googleapis.com/auth/userinfo.email",
+    "https://www.googleapis.com/auth/userinfo.profile",
+    "https://www.googleapis.com/auth/gmail.addons.execute",
+    "https://www.googleapis.com/auth/gmail.addons.current.message.readonly",
+    "https://www.googleapis.com/auth/script.locale",
+    "https://www.googleapis.com/auth/script.external_request"
+  ],
+  "urlFetchWhitelist": [
+    "https://api.sapling.ai/api/v1/aidetect"
+  ],
+  "addOns": {
+    "common": {
+      "name": "scanE 🤖",
+      "logoUrl": "https://teddydidit.com/development/scane/scane-logo.png",
+      "layoutProperties": {
+        "primaryColor": "#3f00ab",
+        "secondaryColor": "#ff0060"
+      }
+    },
+    "gmail": {
+      "homepageTrigger": {
+        "runFunction": "onHomepage"
+      },
+      "contextualTriggers": [
+        {
+          "unconditional": {},
+          "onTriggerFunction": "onGmailMessageOpen"
+        },
+        {
+          "unconditional": {},
+          "onTriggerFunction": "onGmailThreadOpen"
+        }
+      ],
+      "openLinkUrlPrefixes": [
+        "https://script.googleusercontent.com/",
+        "https://teddydidit.com/"
+      ]
+    }
+  }
+}
