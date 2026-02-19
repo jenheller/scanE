@@ -436,8 +436,21 @@ function clPLnk(rawP, wdC) {
   return rawP;
 }
 
+function exHm(src) {
+  const raw = String(src || ""), lc = lCs(raw);
+  const bnds = [
+    { o: "<html", c: "</html>", l: 7 },
+    { o: "<body", c: "</body>", l: 7 }
+  ];
+  for (const b of bnds) {
+    const st = lc.indexOf(b.o), nd = lc.lastIndexOf(b.c);
+    if (st !== -1 && nd > st) { return raw.slice(st, nd + b.l); };
+  }
+  return raw;
+}
+
 function clHCn(html, clL) {
-  let out = String(html || "");
+  let out = exHm(html);
   const isTh = CL_PVS.test(out), cWs = CH_WS.test(out), cMs = CH_MS.test(out);
   if (isTh) { out = out.replace(CL_PVS, "$1") };
   const chks = [
