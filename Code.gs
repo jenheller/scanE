@@ -114,7 +114,7 @@ var P_QTS = /["']/;
 var P_SF1 = /(?:(?:(?:(?:(?:Kind|Warm)(?:est|)|Best|Thank(?:s|\s*[Yy]ou)\s*(?:and|&)\s*([Kk]ind)?)\s*[Rr]egards?)|Best|Warmly|Regards))/;
 var P_SF2 = /Sincerely(?: [Yy]ours|)|Thank(?:s| [Yy]ou)(?: for [\w ]+?)|Yours(?: [Tt]ruly|Sincerely)?|Signed/;
 var P_SFP = /[,:!\.\?]?/;
-var P_SNC = /[\w\p{P} ]+?/u;
+var P_SNC = /[\w\p{P}]+?/u;
 var P_SEQ = /\s*=\s*/;
 var P_STB = /[ \t]*/;
 var P_TAC = /<\/a>/i;
@@ -189,7 +189,7 @@ var M_IGA = new RegExp(`<img${P_NTG.source}alt${P_SEQ.source}"([\\w\\p{P} ]+?)"\
 var M_LBL = new RegExp(`<ul${P_TSX.source}(${P_ACR.source})<\\/ul>`, `gi`);
 var M_LNU = new RegExp(`<ol${P_TSX.source}(${P_ACR.source})<\\/ol>`, `gi`);
 var M_OPC = new RegExp(`^${P_PCT.source}+$`);
-var M_OTG = new RegExp(`^(?:<\\/?${P_NTG.source}>)+$`);
+var M_OTG = /^\s*(\s*<\/?[^<>\n\r]+?>\s*)+\s*$/;
 var S_PRA = new RegExp(`${P_ALB.source}+${P_WS.source}${P_ALB.source}+|${P_ALB.source}+(?=\\S)`, `g`);
 var M_SYA = new RegExp(`(${P_WDD.source}):\\s?([^;]+);?\\s?`, `gi`);
 
@@ -645,6 +645,8 @@ function btF(raw) {
 
 function dcScm(clH, clP) {
   let scm = false, hMCn = 0, pMCn = 0;
+  ckLg(`⚠️ HTML CONTENT (DCSCM): ⚠️\n`, clH);
+  ckLg(`⚠️ PLAIN TEXT CONTENT (DCSCM): ⚠️\n`, clP);
   const gtTkn = (text) => new Set(lCs(String(text || "")).match(M_TKN) || []),
   clL = "Detect Scam"; clH = pstCl(clH, clL);
   const hTkn = gtTkn(clH), pTkn = gtTkn(clP);
@@ -674,24 +676,27 @@ function ckTx(text, maxLength) {
 
 // MATCHERS & COUNTERS //
 
-function mBc(src, subj, sdr) {
+function mBc(src, sbj, sdr) {
   let text = String(src || ""), bg = false, bgC = false, stl = false;
-  const slm = M_SLT.exec(subj);
+  const slm = M_SLT.exec(sbj);
   if (slm) { stl = true; if (dev) { console.log(`💵 SETTLEMENT MATCH: ${slm}`); }; };
   const fPns = [CL_FR, CL_FRC, CL_HR, CL_LLN];
   fPns.forEach(fPn => { lIx(fPn); if (fPn.test(text)) { bgC = true; }; });
   if (M_BSR.test(sdr) || CL_FRB.test(text)) { bg = true; };
-  if (M_CSJ.test(subj) || bg)  { bgC = true; };
+  if (M_CSJ.test(sbj) || bg)  { bgC = true; };
   if (dbg) { console.log(`🆗 COMPLETED: mBc 🆗`); };
   return { bg, bgC, stl };
 }
 
 function mBd(wds) {
   lIx(P_ATG); let lg = "", bHg = true, bNm = true, bSc = true, lb = "";
-  wds = wds.map(wd => wd.replace(P_ATG, "")).filter(wd => P_ALR.test(wd));
   const wdC = wds.length;
-  if (wdC < 2 || wds.includes("|")) {
+  if (wdC < 2 || /\|/.test(wds)) {
     if (dBd) { console.log(`🚫 ${lBT} < 2 WORDS/PIPE ("${wds}")`); };
+    return { bHg: false, bNm: false, bSc: false };
+  }
+  if (M_OTG.test(wds)) {
+    if (dBd) { console.log(`🚫 ${lBT} TAGS ONLY ("${wds}")`); };
     return { bHg: false, bNm: false, bSc: false };
   }
   for (let i = 0; i < wds.length; i++) {
@@ -702,17 +707,15 @@ function mBd(wds) {
       return { bHg: false, bNm: false, bSc: false };
     }
     const chs = [
-      { ch: lw1 !== uCs(lw1), bHg: false, lb: lBH, lg: "LOWER 1ST WORD/LETTER" },
       { ch: wd === uCs(wd), bNm: false, lb: lBN, lg: "ALL CAPS" },
       { ch: l1 !== uCs(l1), bNm: false, lb: lBN, lg: "LOWER 1ST LETTER" },
       { ch: P_NU.test(wd), bNm: false, lb: lBN, lg: "NUMBER(S)" },
-      { ch: lw1 !== uCs(lw1) && !P_APH.test(wd), bSc: false, lb: lBS, lg: "NOT 1ST WORD CAPS" }
+      { ch: lw1 !== uCs(lw1) && !P_APH.test(wd), bHg: false, lb: lBH, lg: "NOT 1ST WORD CAPS" }
     ];
     chs.forEach(c => {
       if (c?.ch) {
         if (c.bHg === false) { bHg = false; };
         if (c.bNm === false) { bNm = false; };
-        if (c.bSc === false) { bSc = false; };
         if (c.lg) { lg = c.lg; };
         if (c.lb) { lb = c.lb; };
       }
@@ -765,21 +768,25 @@ function cBd(src, cBN, bNT) {
   while ((mch = CH_BD.exec(txt)) !== null) {
     const bdM = `("${mch[0]}")`; let lg = "";
     if (mch.length === 0) {
-      if (dBd) { console.log(`🚫 ${lBT} NO CONTENT ${bdM}`) }; continue;
+      if (dBd) { console.log(`🚫 ${lBT} NO CONTENT ${bdM}`) };
+      continue;
     }
-    if (nrmFnt = M_FNR.test(mch[0])) {
-      if (dBd) { console.log(`🚫 ${lBT} INLINE NORMAL FONT ${bdM}`) }; continue;
+    if (M_FNR.test(mch[0])) {
+      if (dBd) { console.log(`🚫 ${lBT} INLINE NORMAL FONT ${bdM}`) };
+      continue;
     }
-    const mEj = mch.groups.emj, mNo = mch.groups.num, cn = mch.groups.cnt,
-    clMc = escRx(mch[0]), cPc = M_HP.test(cn), cLl = (new RegExp(`${clMc}`)).test(lLns),
-    cHg = (new RegExp(`${P_OLO.source}\\s*(${clMc})\\s*${P_OLC.source}`)).test(txt),
-    cSn = (new RegExp(`^${P_SNC.source}${clMc}${P_SNC.source}$`, `um`)).test(txt),
-    { bHg, bSc } = mBd(cn.split(S_WS).filter(word => word));
-    if (dBd) {
+    const mEj = mch.groups.emj, mNo = mch.groups.num, cn = mch.groups.cnt, clMc = escRx(mch[0]);
+    const cPc = M_HP.test(cn), cLl = (new RegExp(`${clMc}`)).test(lLns), tOly = M_OTG.test(cn),
+    cHg = (new RegExp(`${P_OLO.source}\\s*(${clMc})\\s*${P_OLC.source}`)).test(txt);
+    const { bHg, bSc } = mBd(cn.split(S_WS));
+    const isH = (bHg && cHg && !cLl && !cPc);
+    if ((bHg || bSc) && dBd) {
+      if (tOly) { console.log(`🚫 ${lBT} TAGS ONLY ${bdM}`) };
       if (!cHg) { console.log(`🚫 ${lBH} NOT OWN LINE ${bdM}`); };
       if (cLl) { console.log(`🚫 ${lBH} LAST 5 LINES ${bdM}`) };
+      if (cPc) { console.log(`🚫 ${lBH} SENTENCE PUNCTUATION ${bdM}`) };
     }
-    if (bHg && cHg && !cLl && !cPc) {
+    if (isH && !tOly) {
       if (mEj) {
         bd.eHC++; lg = `🙂 EMOJI HEADING MATCH: "${mEj}"`;
       } else if (mNo) {
@@ -788,7 +795,7 @@ function cBd(src, cBN, bNT) {
       } else {
         bd.bHC++; lg = "🔝 BOLD HEADING MATCH: ";
       }
-    } else if (bSc && !cHg && cSn) {
+    } else if (bSc && !isH && !tOly) {
       bd.bSC++; lg = `🖊️ BOLD SENTENCE MATCH: `;
     }
     if (dev && lg !== "") { console.log(`${lg} ("${cn}")`); };
@@ -843,16 +850,24 @@ function cNum(text) {
 }
 
 function mQa(txt) {
-  let cQa, qaM = txt.match(CH_QA); if (!qaM) { return false; };
+  if (dbg) { console.log(`🆗 STARTING: mQa 🆗`); };
+  let cQa; let qaM = txt.match(CH_QA);
+  if (dbg) { console.log(`🆗 qaM: ${qaM} 🆗`); };
+  if (dbg) { console.log(`🆗 COMPLETED: qaM 🆗`); };
+  if (!qaM) { return false; };
   if (dev && qaM) {
     console.log(`❔ Q&A MATCH(ES): ${qaM[0].replace(P_ATG, "")}`);
   }
   for (let i = 0; i < qaM.length; i++) {
     if (nNl(qaM)) { continue; };
-    const clM = escRx(qaM[0]),
-    M_QA_OLN = new RegExp(`${P_OLO.source}${clM}${P_OLC.source}`, `i`),
-    M_QA_HG = new RegExp(`<(h\\d|a\\b)${P_TSX.source}${clM}${P_TCC.source}`, `i`);
+    const clM = escRx(qaM[0]);
+    if (dbg) { console.log(`🆗 COMPLETED: clM 🆗`); };
+    const M_QA_OLN = new RegExp(`${P_OLO.source}${clM}${P_OLC.source}`, `i`);
+    if (dbg) { console.log(`🆗 COMPLETED: M_QA_OLN 🆗`); };
+    const M_QA_HG = new RegExp(`<(h\\d|a\\b)${P_TSX.source}${clM}${P_TCC.source}`, `i`);
+    if (dbg) { console.log(`🆗 COMPLETED: M_QA_HG 🆗`); };
     cQa = M_QA_HG.test(txt) && M_QA_OLN.test(txt) ? false : true;
+    if (dbg) { console.log(`🆗 COMPLETED: cQa 🆗`); };
   }
   if (dbg) { console.log(`🆗 COMPLETED: mQa 🆗`); };
   return cQa;
@@ -887,9 +902,18 @@ function cEmts(text, cBN, bNT) {
 
 function mFlg(text, cMs, cWs, ftr) {
   const ptns = [CH_EJV, CH_SF, CH_PH, CH_QA];
-  ptns.forEach(ptn => lIx(ptn)),
-  snps = { phs: [], qa: [], snf: null, envEj: null, ws: null, ms: null },
-  flgs = { ms: cMs, ws: cWs }, cEnv = CH_EJV.exec(text), snOff = CH_SF.exec(ftr), cQa = mQa(text);
+  ptns.forEach(ptn => lIx(ptn));
+  if (dbg) { console.log(`🆗 COMPLETED: ptns.forEach 🆗`); };
+  const snps = { phs: [], qa: [], snf: null, envEj: null, ws: null, ms: null };
+  if (dbg) { console.log(`🆗 COMPLETED: snps 🆗`); };
+  const flgs = { ms: cMs, ws: cWs };
+  if (dbg) { console.log(`🆗 COMPLETED: flgs 🆗`); };
+  const cEnv = CH_EJV.exec(text);
+  if (dbg) { console.log(`🆗 COMPLETED: cEnv 🆗`); };
+  const snOff = CH_SF.exec(ftr);
+  if (dbg) { console.log(`🆗 COMPLETED: snOff 🆗`); };
+  const cQa = mQa(text);
+  if (dbg) { console.log(`🆗 COMPLETED: cQa 🆗`); };
   if (cEnv) { snps.envEj = cEnv[0].replace(P_ATG, ""); };
   if (snOff) { snps.snf = snOff[1].replace(P_ATG, ""); };
   for (const [key, flg] of Object.entries(flgs)) { if (flg) snps[key] = true; };
@@ -943,9 +967,9 @@ function getMg(e) {
   const mgId = e.gmail.messageId; if (!mgId) { return null; };
   const msg = GmailApp.getMessageById(mgId);
   const date = msg.getDate() ? Utilities.formatDate(msg.getDate(), Session.getScriptTimeZone(), "M/d/yyyy h:mm a") : "";
-  const subj = String(msg.getSubject() || "").replace(CL_SJ, "").trim();
+  const sbj = String(msg.getSubject() || "").replace(CL_SJ, "").trim();
   const sdr = dMg(msg.getFrom() || "unknown").replace(CL_SDR, "");
-  const data = { mgId, date, subj, sdr };
+  const data = { mgId, date, sbj, sdr };
   const rawCn = msg.getBody() || "";
   let sz = szF(rawCn, 1024000, "RAW"), f;
   if (sz || btF(msg.getRawContent().substring(10000, 20000))) {
@@ -969,17 +993,22 @@ function getMg(e) {
   }
   const useP = !h && p ? true : false;
   if (useP && dev) { console.log(lNoH); };
-  const preMg = useP ? clP : clH, { bg, bgC, stl } = mBc(preMg, subj, sdr);
+  const preMg = useP ? clP : clH, { bg, bgC, stl } = mBc(preMg, sbj, sdr);
   if (dev) {
     console.log(`❓ BLOG? ${bg} \n\n❓ BLOG/CO? ${bgC}`);
     ckLg("📝 PRECLEAN CONTENT", preMg);
   }
   let mgCn; ({ text: mgCn, hFr } = clHrFr(preMg, stl));
-  const snps = mFlg(preMg, cMs, cWs, hFr), { cBN, bNT } = mBNm(hFr);
+  const snps = mFlg(preMg, cMs, cWs, hFr);
+  if (dbg) { console.log(`🆗 COMPLETED: mFlg 🆗`); };
+  const { cBN, bNT } = mBNm(hFr);
+  if (dbg) { console.log(`🆗 COMPLETED: mBNm 🆗`); };
   if (cBN) { snps.bNm = true; };
   const cts = cEmts(preMg, cBN, bNT);
+  if (dbg) { console.log(`🆗 COMPLETED: cEmts 🆗`); };
   clL = "Pre-cleaned Message";
   mgCn = useP ? mgCn.replace(CH_EJ, "") : pstCl(mgCn, clL);
+  if (dbg) { console.log(`🆗 COMPLETED: pstCl 🆗`); };
   wdC = cWds(mgCn);
   if (dev) { ckLg(`📝 POSTCLEAN CONTENT`, mgCn); console.log(`📐 SAP WORD COUNT: ${wdC}`); };
   if (dbg) { console.log(`🆗 COMPLETED: getMg 🆗`); };
@@ -987,11 +1016,11 @@ function getMg(e) {
 }
 
 function gtScScr(data) {
-  const { subj, sdr, snps, bg, bgC } = data;
+  const { sbj, sdr, snps, bg, bgC } = data;
   let { bNm, envEj, ws, ms, snf } = snps, pMg = null, qMg = null;
   const pSnp = snps.phs || [], qaSnp = snps.qa || [], fCs = { ...data.cts };
   if ((bgC) && !CH_SF2) { bNm = null; }; if (envEj && fCs.emj > 1) { fCs.emj--; };
-  if (M_AZO.test(subj) || M_AZN.test(sdr)) { fCs.elps = 0 };
+  if (M_AZO.test(sbj) || M_AZN.test(sdr)) { fCs.elps = 0 };
   const clean = (t) => t ? clps(t) : null, snfTx = clean(snf), envTx = clean(envEj);
   const snPhs = pSnp.map(s => {
     const t = String(s || ""); return CH_PHE.test(t) ? t : `${t}...`;
@@ -1026,7 +1055,7 @@ function gtScScr(data) {
     { val: pMg, txt: pMg, scr: 70 },
     { val: qMg, txt: qMg, scr: 70 },
     { val: bNm, txt: `Bold Name in Signature`, scr: 20 },
-    { val: envTx, txt: ` Envelope Emoji: ${envTx}`, scr: 50 },
+    { val: envTx, txt: `Envelope Emoji: ${envTx}`, scr: 50 },
     { val: ms, txt: `Mailsuite Tracking`, scr: 80 },
     { val: snfTx, txt: `Sign-off: "${snfTx}"`, scr: 90 },
     { val: ws, txt: `Wisestamp Signature`, scr: 80 }
@@ -1047,7 +1076,7 @@ function gtScScr(data) {
     bNm: !!bNm, envEj: !!envEj, ws: !!ws, ms: !!ms, bg, bgC
   }
   const extcSnp = { phs: pSnp, qa: qaSnp, snf: snfTx, envEj: envTx };
-  var sbHg = `🚩 AI ELEMENTS FOUND: 🚩\n`;
+  var sbHg = `SUBJECT: ${sbj}\nSENDER: ${sdr}\n🚩 AI ELEMENTS FOUND: 🚩\n`;
   const smy = tgr.length ? sbHg + tgr.map(t => t).join("\n") : sbHg + `None`;
   if (dbg) { console.log(`🆗 COMPLETED: gtScScr 🆗`); }
   return { smy, tgr, flgs, snps: extcSnp, cts: fCs, scScr: scScr };
@@ -1134,7 +1163,7 @@ function onGmailMessageOpen(e) {
     var mDta = getMg(e); if (!mDta) { return onHomepage(e); };
     if (mDta.f) {
       const out = { percent: null, message: null, f: mDta.f };
-      return bCrd(out, mDta.subj, mDta.sdr, mDta.date, null, null, mDta.mgId, null);
+      return bCrd(out, mDta.sbj, mDta.sdr, mDta.date, null, null, mDta.mgId, null);
     }
     let scFnlScr; let chk;
     if (szF(mDta.mgCn, 512000, "SCANE")) {
@@ -1165,16 +1194,16 @@ function onGmailMessageOpen(e) {
     }
     if (dev) { console.log(out.details); };
     if (dbg) { console.log(`🆗 COMPLETED: onGmailMessageOpen 🆗`); }
-    return bCrd(out, mDta.subj, mDta.sdr, mDta.date, spFnlScr, scFnlScr, mDta.mgId, null);
+    return bCrd(out, mDta.sbj, mDta.sdr, mDta.date, spFnlScr, scFnlScr, mDta.mgId, null);
   } catch (err) { return bECrd(err); }
 }
 
-function bCrd(out, subj, sdr, date, spFnlScr, scFnlScr, mid, tid) {
+function bCrd(out, sbj, sdr, date, spFnlScr, scFnlScr, mid, tid) {
   const header = CardService.newCardHeader()
     .setTitle(`${rsbry}scanE - Gmail™ AI Content Scanner${cFnt}`)
     .setSubtitle('Developed by Teddy Did It Development 🐻');
   const sectionMeta = CardService.newCardSection()
-    .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}Subject:${cFnt}`).setContent(subj).setMultiline(true))
+    .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}Subject:${cFnt}`).setContent(sbj).setMultiline(true))
     .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}From:${cFnt}`).setContent(sdr).setMultiline(true))
     .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}Date:${cFnt}`).setContent(date));
   const sectionResults = CardService.newCardSection().setHeader(`${rsbry}<b>Scan Results</b>${cFnt}`);
