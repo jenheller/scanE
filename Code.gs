@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = true, dCl = false, dBd = false;
+const dev = true, dbg = false, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -44,9 +44,9 @@ var CL_TGS = / +([\/;"]?) *>/g;
 var CL_TGY = /style=" +/g;
 var CL_UDD = /[\u{2013}\u{2212}\u{00AD}]/gu;
 var CL_UDL = /[\p{Zp}\u{000A}\u{000d}\u{0085}\u{2028}\u{2029}\u{0000}-\u{0018}\u{001A}-\u{001F}]/gu;
-var CL_UDS = /[\p{Zs}\fm\u{2000}-\u{200A}\u{2007}\u{00A0}\u{0340}\u{00AD}\u{0340}\u{0020}\u{202F}]/gu;
+var CL_UDS = /[\p{Zs}\f\u{2000}-\u{200A}\u{2007}\u{00A0}\u{0340}\u{00AD}\u{0340}\u{0020}\u{202F}]/gu;
 var CL_UDZ = /[\u{2060}\u{FEFF}\u{200B}-\u{200F}\u{034F}\u{0019}]/gu;
-var D_AMP = /%26/g, D_ANY = /&#x([0-9A-Fa-fm]+);?/g, D_NU = /&#(\d+);?/g, D_QPB = /=\r?\n/g, D_QPC = /=([0-9A-F]{2})/g;
+var D_AMP = /%26/g, D_ANY = /&#x([0-9A-Fa-f]+);?/g, D_NU = /&#(\d+);?/g, D_QPB = /=\r?\n/g, D_QPC = /=([0-9A-F]{2})/g;
 var F_CML = /([a-z0-9]),\s+([a-z0-9])/g;
 var F_ERX = /([\|\+\*\.\?\^\$\{\}\(\)\[\]\/\\])/g;
 var F_PRD = /⭕/g;
@@ -474,14 +474,14 @@ function cHC(htm, clL) {
   const isTh = CL_PVS.test(out), cWs = CH_WS.test(out), cMs = CH_MS.test(out);
   if (isTh) { out = out.replace(CL_PVS, "$1") };
   const chs = [
-    [fxT, "fm", "fxT"],    [F_BK, "\n$1\n", "F_BK"],  [CL_HDN, "", "CL_HDN"],     [CL_HDS, "", "CL_HDS"],
-    [CL_CMT, "", "CL_CMT"],   [cHS, "fm", "cHS"], [CL_UDZ, "", "CL_UDZ"],     [CL_UDS, " ", "CL_UDS"],
-    [CL_UDD, "-", "CL_UDD"],  [CL_UDL, "\n", "CL_UDL"],  [F_SBP, " ($2) ", "F_SBP"], [F_TGY, "$1 $2", "F_TGY"],
-    [F_IEJ, "$1", "F_IEJ"],   [cIA, "fm", "cIA"],     [CL_TSR, "\n\n", "CL_TSR"], [CL_TDE, "$<ej1> ", "CL_TDE"],
-    [CL_TDT, "\n", "CL_TDT"], [CL_TFR, "", "CL_TFR"],    [CL_TFG, "\n", "CL_TFG"],   [F_TGL, "<$1>", "F_TGL"],
-    [F_TSP, "$1$2", "F_TSP"], [CL_UHM, "", "CL_UHM"],    [CL_AFT, "", "CL_AFT"],     [h => cAt(h).htm, "fm", "cAt"],
-    [cBT, "fm", "cBT"],  [cvL, "fm", "cvL"],   [CL_LKA, "<$1>", "CL_LKA"], [CL_LKS, "$1", "CL_LKS"],
-    [CL_LKE, "", "CL_LKE"],   [CL_DSH, "", "CL_DSH"],    [CL_XBT, "$1", "CL_XBT"],   [fxP, "fm", "fxP"]
+    [fxT, "f", "fxT"],        [F_BK, "\n$1\n", "F_BK"], [CL_HDN, "", "CL_HDN"],     [CL_HDS, "", "CL_HDS"],
+    [CL_CMT, "", "CL_CMT"],   [cHS, "f", "cHS"],        [CL_UDZ, "", "CL_UDZ"],     [CL_UDS, " ", "CL_UDS"],
+    [CL_UDD, "-", "CL_UDD"],  [CL_UDL, "\n", "CL_UDL"], [F_SBP, " ($2) ", "F_SBP"], [F_TGY, "$1 $2", "F_TGY"],
+    [F_IEJ, "$1", "F_IEJ"],   [cIA, "f", "cIA"],        [CL_TSR, "\n\n", "CL_TSR"], [CL_TDE, "$<ej1> ", "CL_TDE"],
+    [CL_TDT, "\n", "CL_TDT"], [CL_TFR, "", "CL_TFR"],   [CL_TFG, "\n", "CL_TFG"],   [F_TGL, "<$1>", "F_TGL"],
+    [F_TSP, "$1$2", "F_TSP"], [CL_UHM, "", "CL_UHM"],   [CL_AFT, "", "CL_AFT"],     [h => cAt(h).htm, "f", "cAt"],
+    [cBT, "f", "cBT"],        [cvL, "f", "cvL"],        [CL_LKA, "<$1>", "CL_LKA"], [CL_LKS, "$1", "CL_LKS"],
+    [CL_LKE, "", "CL_LKE"],   [CL_DSH, "", "CL_DSH"],   [CL_XBT, "$1", "CL_XBT"],   [fxP, "f", "fxP"]
   ];
   out = rRx(out, chs, clL); out = clp(out);
   if (dbg) { console.log(`🆗 COMPLETED: cHC 🆗`); };
@@ -1219,50 +1219,50 @@ function onGmailMessageOpen(e) {
 }
 
 function bCd(out, sbj, sdr, date, aFS, cFS, mid, tid) {
-  const header = CardService.newCardHeader()
+  const cHdr = CardService.newCardHeader()
     .setTitle(`${rsbry}scanE - Gmail™ AI Content Scanner${cFt}`)
     .setSubtitle('Developed by Teddy Did It Development 🐻');
-  const sectionMeta = CardService.newCardSection()
+  const cMta = CardService.newCardSection()
     .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}Subject:${cFt}`).setContent(sbj).setMultiline(true))
     .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}From:${cFt}`).setContent(sdr).setMultiline(true))
     .addWidget(CardService.newKeyValue().setTopLabel(`${rsbry}Date:${cFt}`).setContent(date));
-  const sectionResults = CardService.newCardSection().setHeader(`${rsbry}<b>Scan Results</b>${cFt}`);
-  const resultWidgets = [];
-  if (out && out.fm) { resultWidgets.push(CardService.newTextParagraph().setText(out.fm)); }
+  const cDta = CardService.newCardSection().setHeader(`${rsbry}<b>Scan Results</b>${cFt}`);
+  const cRst = [];
+  if (out && out.fm) { cRst.push(CardService.newTextParagraph().setText(out.fm)); }
   if (out && out.pct != null) {
-    let scScrTx = ""; let spScrTx = "";
+    let cSX = ""; let aSX = "";
     if (typeof cFS === 'number') {
-      scScrTx = `${bkbry}<b>▸ ${cFS}%</b>${cFt}`;
-    } else { scScrTx = `${bkbry}<b>▸ </b>${cFt}${cFS}`; };
+      cSX = `${bkbry}<b>▸ ${cFS}%</b>${cFt}`;
+    } else { cSX = `${bkbry}<b>▸ </b>${cFt}${cFS}`; };
     if (typeof aFS === 'number') {
-      spScrTx = `${bkbry}<b>▸ ${aFS}%</b>${cFt}`;
-    } else { spScrTx = `${bkbry}<b>▸ </b>${cFt}${aFS}`; };
-    resultWidgets.push(CardService.newTextParagraph()
+      aSX = `${bkbry}<b>▸ ${aFS}%</b>${cFt}`;
+    } else { aSX = `${bkbry}<b>▸ </b>${cFt}${aFS}`; };
+    cRst.push(CardService.newTextParagraph()
       .setText(`${bkbry}<b>scanE Score</b>${cFt}<br /><em>(Level 1: phrases, formatting, punctuation, emojis, email tracking)</em>`));
-    resultWidgets.push(CardService.newTextParagraph().setText(scScrTx));
-    resultWidgets.push(CardService.newTextParagraph()
+    cRst.push(CardService.newTextParagraph().setText(cSX));
+    cRst.push(CardService.newTextParagraph()
       .setText(`${bkbry}<b>Sapling Score</b>${cFt}<br /><em>(Level 2: tone, style, word choice, phrasing, sentence structure)</em>`));
-    resultWidgets.push(CardService.newTextParagraph().setText(spScrTx));
-    resultWidgets.push(CardService.newTextParagraph().setText(`${rsbry}<b>⭐FINAL SCORE: ${out.pct}%⭐</b>${cFt}`));
+    cRst.push(CardService.newTextParagraph().setText(aSX));
+    cRst.push(CardService.newTextParagraph().setText(`${rsbry}<b>⭐FINAL SCORE: ${out.pct}%⭐</b>${cFt}`));
   }
-  if (out && out.message) { resultWidgets.push(CardService.newTextParagraph().setText(`${out.message}`)); };
-  resultWidgets.forEach(w => sectionResults.addWidget(w));
-  const builder = CardService.newCardBuilder().setHeader(header).addSection(sectionMeta);
-  if (resultWidgets.length > 0) { builder.addSection(sectionResults); }
+  if (out && out.message) { cRst.push(CardService.newTextParagraph().setText(`${out.message}`)); };
+  cRst.forEach(w => cDta.addWidget(w));
+  const bdr = CardService.newCardBuilder().setHeader(cHdr).addSection(cMta);
+  if (cRst.length > 0) { bdr.addSection(cDta); }
   if (out && out.pct !== null) {
-    const sectionDisclaimer = CardService.newCardSection().addWidget(CardService.newTextParagraph()
+    const cDmr = CardService.newCardSection().addWidget(CardService.newTextParagraph()
       .setText(`${bkbry}<em>Powered by Sapling's AI Detector</em><strong>:</strong> <em>Over&nbsp;97%&nbsp;accurate.</em>${cFt}`));
-    builder.addSection(sectionDisclaimer);
+    bdr.addSection(cDmr);
   }
   if (dbg) { console.log(`🆗 COMPLETED: bCd 🆗`); };
   if (dbg || dev) { console.log(`🎉 SUCCESS! 🎉`); };
-  return builder.build();
+  return bdr.build();
 }
 
 function bEC(err) {
   const eMg = (err && err.message) ? err.message : String(err),
-  header = CardService.newCardHeader().setTitle("scanE - Gmail™ AI Content Scanner").setSubtitle("Error"),
-  errorSection = CardService.newCardSection().addWidget(CardService.newTextParagraph()
+  crd = CardService.newCardHeader().setTitle("scanE - Gmail™ AI Content Scanner").setSubtitle("Error"),
+  cErr = CardService.newCardSection().addWidget(CardService.newTextParagraph()
     .setText(`${stbry}<em><b>Sorry!</b></em> That didn't work. 😕<br />${eMg}${cFt}`));
-  return CardService.newCardBuilder().setHeader(header).addSection(errorSection).build();
+  return CardService.newCardBuilder().setHeader(crd).addSection(cErr).build();
 }
