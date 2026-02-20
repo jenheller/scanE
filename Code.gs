@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = false, dCl = false, dBd = false;
+const dev = true, dbg = false, dCl = true, dBd = false;
 
 // CACHED API KEY //
 
@@ -472,7 +472,7 @@ function cHC(htm, clL) {
   }  
   let out = String(htm || "");
   const isTh = CL_PVS.test(out), cWs = CH_WS.test(out), cMs = CH_MS.test(out);
-  if (isTh) { out = out.replace(CL_PVS, "$1") };
+  out = out.replace(CL_PVS, "$1");
   const chs = [
     [fxT, "f", "fxT"],        [F_BK, "\n$1\n", "F_BK"], [CL_HDN, "", "CL_HDN"],     [CL_HDS, "", "CL_HDS"],
     [CL_CMT, "", "CL_CMT"],   [cHS, "f", "cHS"],        [CL_UDZ, "", "CL_UDZ"],     [CL_UDS, " ", "CL_UDS"],
