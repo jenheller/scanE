@@ -253,12 +253,12 @@ function ckL(lb, dta, sz = 4000) {
 function rRx(out, chs, clL) {
   if (clL === "HTML" || clL === "Plain Text") {
     chs.forEach(([p, r, l]) => {
-      out = (r === "fm") ? p(out) : out.replace(p, r);
+      out = (r === "f") ? p(out) : out.replace(p, r);
       if (dbg) { console.log(`🆗 COMPLETED: ${l} 🆗`) };
       if (dCl) { ckL(`🐞🐞 AFTER ${clL} ${l} 🐞🐞`, clp(out)); };
     });
   } else {
-    chs.forEach(([p, r]) => { out = (r === "fm") ? p(out) : out.replace(p, r); });
+    chs.forEach(([p, r]) => { out = (r === "f") ? p(out) : out.replace(p, r); });
   }
   if (dbg) { console.log(`🆗 COMPLETED: ${clL} rRx 🆗`) };
   return out;
