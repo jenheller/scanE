@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = false, dCl = true, dBd = false;
+const dev = true, dbg = false, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -167,7 +167,7 @@ var CL_MBD = new RegExp(`${P_MD.source}{2}${P_AC1.source}${P_MD.source}{2}`, `g`
 var CL_MBT = new RegExp(`${P_MD.source}{3}${P_AC1.source}${P_MD.source}{3}`, `g`);
 var CL_MIT = new RegExp(`${P_MD.source}${P_AC1.source}${P_MD.source}`, `g`);
 var CL_MSK = new RegExp(`~~${P_AC1.source}~~`, "g");
-var CL_PVS = new RegExp(`(${P_LS.source})(?:(?:(?:(?:On(?:\\s${P_ULL.source}{1,5},)?\\s${P_ULL.source}{1,10}\\s\\d{1,2},\\s\\d{4},?\s(?:at\\s)?\\d{1,2}:\\d{1,2}(?:\\:\\d{1,2})?\\s[AP]M(?:\\s[A-Z]{3})?,?\\s${P_EML.source}\\swrote${P_WS.source})|(?:(?:(?:Begin\\s|${P_WS.source}-{2,10}${P_WS.source})[Ff]orwarded|[Oo]riginal)\\s[Mm]essage))(?:${P_WS.source}-{2,6}${P_WS.source}|:))|(?:${P_BDO.source}|)From${P_WS.source}${P_EML.source})${P_LE.source}${P_ACN.source}$`);
+var CL_PVS = new RegExp(`(${P_LS.source})(?:(?:(?:(?:On(?:\\s${P_ULL.source}{1,5},)?\\s${P_ULL.source}{1,10}\\s\\d{1,2},\\s\\d{4},?\\s(?:at\\s)?\\d{1,2}:\\d{1,2}(?:\\:\\d{1,2})?\\s[AP]M(?:\\s[A-Z]{3})?,?\\s${P_EML.source}\\swrote${P_WS.source})|(?:(?:(?:Begin\\s|${P_WS.source}-{2,10}${P_WS.source})[Ff]orwarded|[Oo]riginal)\\s[Mm]essage))(?:${P_WS.source}-{2,6}${P_WS.source}|:))|(?:${P_BDO.source}|)From${P_WS.source}${P_EML.source})${P_LE.source}${P_ACN.source}$`);
 var CL_TBC = new RegExp(`^${P_WS.source}style=${P_QTS.source}${P_NTG.source}>`, `gm`);
 var CL_TFG = new RegExp(`<(figure|figcaption)${P_TSX.source}${P_ACN.source}${P_TCC.source}`, `gi`);
 var CL_TFR = new RegExp(`fr-original-style${P_SEQ.source}"[^">]*(?:"[^">]*"[^">]*)*"`, `gi`);
@@ -996,8 +996,7 @@ function gMg(e) {
   let fm, rwCn = msg.getBody() || "";
   if (szF(rwCn, 1024000, "RAW")) { return { ...dta, fm: fZ }; };
   if (btF(rwCn.substring(10000, 20000))) { return { ...dta, fm: fBt }; };
-  rwCn = dMg(rwCn);
-  const rwH = exH(rwCn);
+  rwCn = dMg(rwCn); const rwH = exH(rwCn);
   if (M_SCH.test(rwH)) { if (dev) { console.log(lHSm); }; return { ...dta, fm: fSm }; };
   const { scP, raP } = exP(rwCn);
   if (dev) { console.log(`❓ SCAM PLAIN TEXT? ${scP} ❓`); };
@@ -1020,7 +1019,7 @@ function gMg(e) {
   if (useP && dev) { console.log(lNH); };
   const pMg = useP ? clP : clH, { bg, bgC, stl } = mBc(pMg, sbj, sdr);
   if (dev) {
-    console.log(`❓ BLOG? ${bg} \n\n❓ BLOG/CO? ${bgC}`);
+    console.log(`❓ BLOG? ${bg} \n❓ BLOG/CO? ${bgC}`);
     ckL("📝 PRECLEAN CONTENT", pMg);
   }
   let mgCn; ({ txt: mgCn, hFr } = cHF(pMg, stl));
@@ -1096,7 +1095,7 @@ function gCS(dta) {
     bNm: !!bNm, eEj: !!eEj, wst: !!wst, msT: !!msT, bg, bgC
   }
   const eSp = { phs: phS, qa: qaS, snf: sfX, eEj: evX };
-  var sbHg = `SUBJECT: ${sbj}\nSENDER: ${sdr}\n🚩 AI ELEMENTS FOUND: 🚩\n`;
+  var sbHg = `🚩 AI ELEMENTS FOUND: 🚩\n`;
   const smy = tgr.length ? sbHg + tgr.map(t => t).join("\n") : sbHg + `None`;
   if (dbg) { console.log(`🆗 COMPLETED: gCS 🆗`); }
   return { smy, tgr, flgs, snps: eSp, cts: fCs, cSr: cSr };
