@@ -462,7 +462,7 @@ function exP(raw) {
   if (nNl(pA[1]) || pAt || pAW === 0) {
     scP = false; out = "";
   } else { scP = true; out = pA };
-  return { scP, out };
+  return { scP, raP: out };
 }
 
 function cHC(htm, clL) {
@@ -508,7 +508,7 @@ function cPC(ptx, clL) {
   const pWC = cWd(out); out = cPL(out, pWC);
   out = clp(out);
   if (dbg) { console.log(`🆗 COMPLETED: cPC 🆗`); };
-  return { out: out, isTp: isTp };
+  return { cnP: out, isTp: isTp };
 }
 
 function sHF(txt) {
@@ -999,17 +999,17 @@ function gMg(e) {
   rwCn = dMg(rwCn);
   const rwH = exH(rwCn);
   if (M_SCH.test(rwH)) { if (dev) { console.log(lHSm); }; return { ...dta, fm: fSm }; };
-  const { scP, out } = exP(rwCn);
+  const { scP, raP } = exP(rwCn);
   if (dev) { console.log(`❓ SCAM PLAIN TEXT? ${scP} ❓`); };
-  const rwP = scP ? out : dMg(msg.getPlainBody());
+  const rwP = scP ? raP : dMg(msg.getPlainBody());
   const hWc = cWd(rwH), pWc = cWd(rwP);
   if (hWc < 5 && pWc < 5) { return { ...date, fm: fNC }; };
   let clH, clP, clL = "HTML";
   ({ out: clH, cMs, cWs, isTh } = cHC(rwH, clL));
   clH = clH.replace(CL_DTY, "");
   const mpH = CL_DTY.test(rwP) ? true : false;
-  clL = "Plain Text"; ({ out, isTp } = cPC(rwP, clL));
-  clP = !mpH ? out : clH;
+  clL = "Plain Text"; ({ cnP, isTp } = cPC(rwP, clL));
+  clP = !mpH ? cnP : clH;
   const isT = (isTh || isTp) ? true : false;
   ({ h, p, fm: fm } = cnF(clH, clP, mpH, isT));
   if (!h && !p) { return { ...dta, fm: fm }; };
@@ -1029,7 +1029,7 @@ function gMg(e) {
   const cts = cEt(pMg, cBN, bNT);
   clL = "Pre-cleaned Message";
   mgCn = useP ? mgCn.replace(CH_EJ, "") : pCl(mgCn, clL);
-  wdC = cWd(mgCn);
+  let wdC = cWd(mgCn);
   if (dev) { ckL(`📝 POSTCLEAN CONTENT`, mgCn); console.log(`📐 SAP WORD COUNT: ${wdC}`); };
   if (dbg) { console.log(`🆗 COMPLETED: gMg 🆗`); };
   return { ...dta, mgCn: mgCn, bg: bg, bgC: bgC, cBN: cBN, bNT: bNT, cts: cts, snps: snps, wdC: wdC };
@@ -1264,6 +1264,5 @@ function bEC(err) {
   header = CardService.newCardHeader().setTitle("scanE - Gmail™ AI Content Scanner").setSubtitle("Error"),
   errorSection = CardService.newCardSection().addWidget(CardService.newTextParagraph()
     .setText(`${stbry}<em><b>Sorry!</b></em> That didn't work. 😕<br />${eMg}${cFt}`));
-  if (dbg) { console.log(`🆗 COMPLETED: bEC 🆗`) };
   return CardService.newCardBuilder().setHeader(header).addSection(errorSection).build();
 }
