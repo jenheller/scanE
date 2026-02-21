@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = false, dCl = false, dBd = false;
+const dev = true, dbg = true, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -218,6 +218,7 @@ var lHSm = `🛑 FILTER: 🚨 SCAM! 🚨 (SNEAKY HIDDEN TEXT) 🚨 🛑`;
 var lNH = `🛑 FILTER: NO HTML - USING PLAIN TEXT`;
 var lSm = `🛑 FILTER: 🚨 SCAM! 🚨 (DISSIMILAR) 🚨 🛑`;
 var rNC = `WORD COUNT < 5`;
+var skA = `🛑 FILTER: SAPLING ERROR - TIMEOUT - SKIPPING SAPLING 🛑\n`;
 
 // FUNCTIONS //
 
@@ -950,7 +951,7 @@ function bAR(ck) {
   return {
     url: "https://api.sapling.ai/api/v1/aidetect", method: "post", contentType: "application/json",
     headers: { "Accept": "application/json", "Accept-Encoding": "gzip" },
-    payload: JSON.stringify({ key: __SAPLING_KEY, txt: ck, sent_SCRs: false }),
+    payload: JSON.stringify({ key: __SAPLING_KEY, text: ck, sent_SCRs: false }),
     followRedirects: false, muteHttpExceptions: true
   }
 }
@@ -1117,7 +1118,6 @@ function map(pct) {
 }
 
 function aDc(src) {
-  var skA = `🛑 FILTER: SAPLING ERROR - TIMEOUT - SKIPPING SAPLING 🛑\n`;
   if (!__SAPLING_KEY) {
     __SAPLING_KEY = PropertiesService.getScriptProperties().getProperty("SAPLING_API_KEY");
     if (!__SAPLING_KEY) throw new Error("Missing SAPLING_API_KEY script property");
@@ -1126,31 +1126,24 @@ function aDc(src) {
   if (!txt) return 0; const t0 = Date.now();
   const cks = ckT(txt, 400), req = bAR(cks[0]),
   res = UrlFetchApp.fetch(req.url, req);
-  if ((Date.now() - t0) > 5000) {
-    console.log(skA); throw new Error("TIMEOUT");
-  }
+  if ((Date.now() - t0) > 5000) { console.log(skA); throw new Error("TIMEOUT"); };
   let rty, num, total = 0, wtd = 0,
   code = res.getResponseCode(), body = res.getContentText(),
-  rtE = 400 && M_XVL.test(body), mch = M_SCR.exec(body),
-  jsn = JSON.parse(body);
-  const rsps = UrlFetchApp.fetchAll(cks.map(function(ck) {
-    return bAR(ck); 
-  }));
-  if ((Date.now() - t0) > 5000) {
-    console.log(skA); throw new Error("TIMEOUT");
+  rtE = 400 && M_XVL.test(body), mch = M_SCR.exec(body), jsn;
+  try {
+    jsn = JSON.parse(body);
+  } catch (e) {
+    console.error(`⛔ SAPLING ERROR ${code}: ${body}`);
+    throw new Error(`⛔ SAPLING ERROR ${code}: ${body}`);
   }
+  const rsps = UrlFetchApp.fetchAll(cks.map(function(ck) { return bAR(ck); }));
+  if ((Date.now() - t0) > 5000) { console.log(skA); throw new Error("TIMEOUT"); };
   rsps.forEach(function(res, idx) {
-    if ((Date.now() - t0) > 5000) {
-      console.log(skA); throw new Error("TIMEOUT");
-    }
-    if (cks.length === 1) {
-      if (code === rtE) { rty = rtA(cks[0]); };
-    }
-    if (code === rtE) {
-      rty = rtA(cks[idx]); code = rty.code; body = rty.body;
-    }
+    if ((Date.now() - t0) > 5000) { console.log(skA); throw new Error("TIMEOUT"); };
+    if (cks.length === 1) { if (code === rtE) { rty = rtA(cks[0]); }; };
+    if (code === rtE) { rty = rtA(cks[idx]); code = rty.code; body = rty.body; };
     if (code < 200 || code >= 300) {
-      console.log(`🛑 FILTER: SAPLING ERROR - ${code}: ${body} - SKIPPING SAPLING 🛑\n`);
+      if (dev) { console.log(`🛑 FILTER: SAPLING ERROR - ${code}: ${body} - SKIPPING SAPLING 🛑\n`); };
       throw new Error(eAE);
     }
     let raw = null;
