@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = true, dCl = false, dBd = false;
+const dev = true, dbg = false, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
