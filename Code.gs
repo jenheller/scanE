@@ -26,7 +26,7 @@ var CL_CPS = /[\t ]+/g;
 var CL_DSH = /^[-=]+$/gm;
 var CL_FR = /unsubscribe|(?:no\s*longer|)\s*(?:would|want|wish|need)\s*(?:like\s*|)(?:stop|change)\s*(?:show\syou|to|your\ssubcription)\s*(?:receive?(?:ing)?|(?:be\s*|)removed|remove\s*yourself)|advertise\s*(?:on|with)/i;
 var CL_FRB = /(?:(?:mem|subsci|read)b?er|pay)[\s\-](?:only|(?:wall|support)ed)|(?:pledg|donat)(?:ing|e|ion)\b|(?:keep|continue|read|view|see)\s(?:more|full\sstory|reading)|(?:you(?:\sare|[’']re)\scurrently)|(?:become?(?:ing)?\s*an?\s*(?:free\s*(?:or\s*(?:paid|paying))?|(?:[\w\p{P} ]+))?\s*(?:member|subscriber\b))|buy\sme\sa\scoffee|support\s(?:us|me|(?:our|my)\swork)|(?:for\saccess|if\syou).*?\supgrade\b|add\s*(?:your)?\spostal\saddress\shere|web\s*version/ui;
-var CL_FRC = /(?:did\snot|didn[’']t)\s(?:authorize|atpt|req|grant|access|allow|make)|\bdo\snot\s(?:respond|reply)|no[-\s]reply|(?:not\s|un)(?:monitor|attend)ed|void\swhere\sprohibited|no\scash\svalue|not\scombinable|(?:about|check\sout|connect|download|chat|reach\sout)\s?(?:with|the|our|to|)\s?(?:new\s|)(?:us|help|support|(?:mobile\s|)app\b|web[ -]?(?:site|page))|free\s(?:trial|membership|subscription|month|post|article|account|sample|gift)|(?:secure|change|reset|(?:re|)view|manage|adjust|modify|update|\bedit)\s(?:your|the|my|)\s?(?:account|communications?|notifications?|subscription|membership|profile|security|password|(?:email\s|)preferences?|settings|options|activity)|(?:you\s*(?:[’']ve|have|are|)\s*(?:(?:receiv|got)(?:ed|ing))|forwarded|was\s*(?:this|these)\s*(?:electronic\smessage\s|)(?:email|message|notification|notice|transmission|communication)s?\s*(?:because|is|was|(?:may\s*|)contains?|forwarded\sto\syou|in\serror))|offer\s(?:only|)\s?valid|not\scombinable|cannot\sbe\scombined|fees\s(?:may|)\s?apply|use\sthereof|terms\s(?:of|and|&)\s(?:use|sale|conditions)|(?:privacy|confidentiality)\s*(?:and|&)?\s*(?:policy|notice|statement|practices|(?:and|&)\ssecurity)|(named|intended)\s*(?:(?:only\s)?for|recipient|to\s*be(?:\s*for|))/i;
+var CL_FRC = /(?:did\snot|didn[’']t)\s(?:authorize|atpt|req|grant|access|allow|make)|\bdo\snot\s(?:respond|reply)|no[-\s]reply|(?:not\s|un)(?:monitor|attend)ed|void\swhere\sprohibited|no\scash\svalue|not\scombinable|(?:about|check\sout|connect|download|chat|reach\sout)\s?(?:with|the|our|to|)\s?(?:new\s|)(?:us|help|support|(?:mobile\s|)app\b|web[ -]?(?:site|page))|free\s(?:trial|membership|subscription|month|post|article|account|sample|gift)|(?:secure|change|reset|(?:re|)view|manage|adjust|modify|update|\bedit)\s(?:your|the|my|)\s?(?:account|communications?|notifications?|subscription|membership|profile|security|password|(?:email\s|)preferences?|settings|options|activity)|(?:you\s*(?:[’']ve|have|are|)\s*(?:(?:receiv|got)(?:ed|ing))|forwarded|was\s*(?:this|these)\s*(?:electronic\smessage\s|)(?:email|message|notification|notice|transmission|communication)s?\s*(?:because|is|was|(?:may\s*|)contains?|forwarded\sto\syou|in\serror))|offer\s(?:only|)\s?valid|not\scombinable|cannot\sbe\scombined|fees\s(?:may|)\s?apply|use\sthereof|\Bterms\s(?:of|and|&)\s(?:use|sale|conditions)|(?:privacy|confidentiality)\s*(?:and|&)?\s*(?:policy|notice|statement|practices|(?:and|&)\ssecurity)|(named|intended)\s*(?:(?:only\s)?for|recipient|to\s*be(?:\s*for|))/i;
 var CL_HFF = /forward(?:ed|)\sthis\s(?:to\syou|)\s?(?:message|email|post|newsletter|article)/i;
 var CL_HR = /(?:view|read|see|open)\s(?:this|)\s?(?:email|post|article|message|web|in)\s?(?:[oi]n|as|)\s?(?:the|a|)[\s\-](?:line|app|web|version|browser)|web\s*version/i;
 var CL_LKI = /\[([\w \p{P}]+?)\]\((?:https?:\/\/|mailto:|\??utm_)[\w\d\p{P}\s=]+?\)/gui;
@@ -83,7 +83,7 @@ var M_TKN = /[a-z]{4,}/g;
 var M_WSO = /^[\s\|]+$/;
 var M_XVL = /Expecting value/;
 var P_ACN = /[\S\s]*?/;
-var P_ACR = /[\S\s]+?/;
+var P_ACR = /[\S\s]+/;
 var P_AC1 = /(.*?)/;
 var P_ALB = /[\n\r]/g;
 var P_ALR = /[A-Za-z]/;
@@ -97,7 +97,7 @@ var P_DCD = /(?: |%)/;
 var P_DSH = /-{0,2}/;
 var P_DTP = /!DOCTYPE/i;
 var P_EJH = /^\s*/;
-var P_EML = /[\w@\.\-_\s<>\/\\"=:]+/;
+var P_EML = /[A-Za-z\s<>@\.]+/;
 var P_LS = /[\n\r>]/;
 var P_LBM = /(?:^|[\n\r]|>)/;
 var P_LE = /[\n\r<]/;
@@ -110,6 +110,7 @@ var P_NEJ = /[^\p{Emoji_Presentation}\p{Extended_Pictographic}]/u;
 var P_NLB = /[^\n\r]/;
 var P_NTG = /[^<>]*?/;
 var P_NU = /\d+/;
+var P_NU2 = /\d{1,2}/;
 var P_NUL = /[\divx]{1,3}/;
 var P_OLC = /(?:[\n\r]|$)/;
 var P_OLO = /(?:[\n\r]|^)/;
@@ -127,7 +128,7 @@ var P_TCC = /<\/\1>/;
 var P_TSC = /\b\s*/;
 var P_TSO = /<\/?\b/;
 var P_TSP = /p|div|h\d|ul|ol|li|button|img|hrl/gi;
-var P_TSR = /table|tr|th|tbody|thead|br/gi;
+var P_TSR = /table|tr|th|tbody|thead|br|blockquote/gi;
 var P_TSX = /[^>\/]*?>/;
 var P_ULL = /[A-Z][a-z]/;
 var P_WDD = /[\w\-]+/;
@@ -146,10 +147,10 @@ var CH_BLN = new RegExp(`${P_EJH.source}${CH_EJ.source} ? *${P_LRN.source}`, `u`
 var CH_BLT = new RegExp(`<ul${P_TSX.source}`, `gi`);
 var CH_BLX = new RegExp(`${P_LBM.source}(${P_BL.source})${P_WS.source}${P_NLB.source}+$${P_ALB.source}`, `gmi`);
 var CH_HTG = new RegExp (`<h\\d\\b${P_TSX.source}`, `gi`);
-var CH_ITC = new RegExp(`<(?:\\b(?:em|i)\\b|${P_NTG.source}font-style:\\s?italic)${P_TSX.source}`, `gi`);
+var CH_ITC = new RegExp(`<(?:\\b(?:em|i)\\b|${P_NTG.source}font-style:${P_WS.source}italic)${P_TSX.source}`, `gi`);
 var CH_NUT = new RegExp(`<ol${P_TSX.source}`, `gi`);
 var CH_NUX = new RegExp(`${P_LBM.source}${P_STB.source}[${P_NUL.source}[\\.\\)]\\s+${P_NLB.source}+?(?:$|${P_LE.source})`, `gm`);
-var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)\\s(?:absolutely|completely)\\s?(?:right|correct)|that(?:${P_APH.source}s|\\sis)\\s?a?\\s?(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)\\s(?:clarify|be\\sclear)|would\\syou\\sbe\\s(?:interested\\sin|open\\sto)|no\\s(?:strings attached|pressure)|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)\\s?(?:so|very|)\\s?(?:much|)\\sfor\\syour\\s(?:kind|thoughtful|kind\\s(?:and|&|&amp;)\\sthoughtful)\\s(?:reply|rsps|message|email|question)|i\\stake\\s(?:full|total|complete|)\\s?responsibility|i\\sjust\\s(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SFP.source}?`, `gui`);
+var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)${P_WS.source}(?:absolutely|completely)${P_WS.source}(?:right|correct)|that(?:${P_APH.source}s|\\sis)${P_WS.source}a?${P_WS.source}(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)${P_WS.source}(?:clarify|be\\sclear)|would\\syou\\sbe${P_WS.source}(?:interested\\sin|open\\sto)|no${P_WS.source}(?:strings attached|pressure)|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)${P_WS.source}(?:so|very|)${P_WS.source}(?:much|)\\sfor\\syour${P_WS.source}(?:kind|thoughtful|kind${P_WS.source}(?:and|&|&amp;)\\sthoughtful)${P_WS.source}(?:reply|rsps|message|email|question)|i\\stake${P_WS.source}(?:full|total|complete|)${P_WS.source}responsibility|i\\sjust${P_WS.source}(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SFP.source}?`, `gui`);
 var CH_QA = new RegExp(`(?:Short answer|Why|The (?:${P_SNC.source} *){1,2})\\? *[A-Z](?:${P_SNC.source} *){1,10}(?:${P_ATG.source})?\\.`, `gu`);
 var CH_SF = new RegExp(`${P_LBM.source}(${P_SF1.source}${P_SFP.source})${P_LEM.source}`, `m`);
 var CH_SF2 = new RegExp(`${P_LBM.source}(${P_SF2.source}${P_SFP.source})${P_LEM.source}`, `im`);
@@ -158,21 +159,21 @@ var CL_CMT = new RegExp(`<!(?${P_DTP.source})${P_DSH.source} *\\[?${P_CMI.source
 var CL_DTY = new RegExp(`<${P_WS.source}${P_DTP.source}${P_NTG.source}>`, `i`);
 var CL_XBT = new RegExp(`(${P_ATG.source})>`, `g`);
 var CL_HDN = new RegExp(`<(?<tag>(?!br)\\w+)${P_WS.source}${P_NTG.source}(?:aria-hidden="true"|style=")${P_NTG.source}(?:[^-]color:${P_WS.source}transparent|display:${P_WS.source}none|(?:(?:line|max)-?(?:height|width)|(?<!-)(?:height|weight)|font-size|opacity):${P_WS.source}(?:0|calc\(?<pct>[\\d[a-zA-Z%]+)${P_WS.source}-${P_WS.source}\\k<pct>\\)|mso-hide:${P_WS.source}all|visibility:${P_WS.source}hidden))${P_TSX.source}${P_NTG.source}<\\/\\k<tag>>`, `gi`);
-var CL_HDS = new RegExp(`<(?<tag>\\w+)${P_WS.source}${P_NTG.source}(?:aria-hidden="true"|style=")${P_NTG.source}(?:[^-]color:\\s?transparent|display:${P_WS.source}none|(?:(?:line|max)-?(?:height|width)|(?<!-)(?:height|weight)|font-size|opacity):${P_WS.source}(?:0|calc(?<pct>[\\d[a-zA-Z%]+)${P_WS.source}-${P_WS.source}\\k<pct>\\)|mso-hide:\\s?all|visibility:\\s?hidden))${P_NTG.source} ?\\/>`, `gi`);
+var CL_HDS = new RegExp(`<(?<tag>\\w+)${P_WS.source}${P_NTG.source}(?:aria-hidden="true"|style=")${P_NTG.source}(?:[^-]color:${P_WS.source}transparent|display:${P_WS.source}none|(?:(?:line|max)-?(?:height|width)|(?<!-)(?:height|weight)|font-size|opacity):${P_WS.source}(?:0|calc(?<pct>[\\d[a-zA-Z%]+)${P_WS.source}-${P_WS.source}\\k<pct>\\)|mso-hide:${P_WS.source}all|visibility:${P_WS.source}hidden))${P_NTG.source} ?\\/>`, `gi`);
 var CL_LK = new RegExp(`${P_TAO.source}${P_ACN.source}${P_TAC.source}`, `gi`);
 var CL_LKA = new RegExp(`${P_LKO.source}${P_NTG.source}>`, `gi`);
 var CL_LKE = new RegExp(`${P_TAO.source}${P_WS.source}${P_TAC.source}`, `gi`);
-var CL_MD = new RegExp(`${P_MD.source}{1,3}([\\S\\s]+?)${P_MD.source}{1,3}`, `g`);
+var CL_MD = new RegExp(`${P_MD.source}{1,3}(${P_ACR.source}?)${P_MD.source}{1,3}`, `g`);
 var CL_MBD = new RegExp(`${P_MD.source}{2}${P_AC1.source}${P_MD.source}{2}`, `g`);
 var CL_MBT = new RegExp(`${P_MD.source}{3}${P_AC1.source}${P_MD.source}{3}`, `g`);
 var CL_MIT = new RegExp(`${P_MD.source}${P_AC1.source}${P_MD.source}`, `g`);
 var CL_MSK = new RegExp(`~~${P_AC1.source}~~`, "g");
-var CL_PVS = new RegExp(`(${P_LS.source})(?:(?:(?:(?:On(?:\\s${P_ULL.source}{1,5},)?\\s${P_ULL.source}{1,10}\\s\\d{1,2},\\s\\d{4},?\\s(?:at\\s)?\\d{1,2}:\\d{1,2}(?:\\:\\d{1,2})?\\s[AP]M(?:\\s[A-Z]{3})?,?\\s${P_EML.source}\\swrote${P_WS.source})|(?:(?:(?:Begin\\s|${P_WS.source}-{2,10}${P_WS.source})[Ff]orwarded|[Oo]riginal)\\s[Mm]essage))(?:${P_WS.source}-{2,6}${P_WS.source}|:))|(?:${P_BDO.source}|)From${P_WS.source}${P_EML.source})${P_LE.source}${P_ACN.source}$`);
+var CL_PVS = new RegExp(`\\b(?:On${P_WS.source}(?:${P_NU2.source}${P_WS.source})?(?:Jan|Feb|March|April|May|June|July|Aug|Sept|Oct|Nov|Dec)\\.?(?:${P_WS.source}${P_NU2.source},?)?${P_WS.source}\\d{4}(?:\\sat)?${P_WS.source}${P_NU2.source}:\\d{2}${P_WS.source}[AaPp][Mm],?${P_WS.source}${P_EML.source}\\swrote:|(?:(?:(?:Begin${P_WS.source}|${P_WS.source}-{2,10}${P_WS.source})[Ff]orwarded|[Oo]riginal)${P_WS.source}[Mm]essage)(?:${P_WS.source}-{2,6}${P_WS.source}|:)|(?:${P_BDO.source})?From)${P_ACR.source}$`);
 var CL_TBC = new RegExp(`^${P_WS.source}style=${P_QTS.source}${P_NTG.source}>`, `gm`);
 var CL_TFG = new RegExp(`<(figure|figcaption)${P_TSX.source}${P_ACN.source}${P_TCC.source}`, `gi`);
 var CL_TFR = new RegExp(`fr-original-style${P_SEQ.source}"[^">]*(?:"[^">]*"[^">]*)*"`, `gi`);
 var CL_TSP = new RegExp(`${P_TSO.source}(?:${P_TSP.source})${P_TSC.source}${P_TSX.source}`, `gi`);
-var CL_TSR = new RegExp(`${P_TSO.source}(?:${P_TSR.source})${P_TSC.source}${P_NTG.source}\\s*\\/?>`, `gi`);
+var CL_TSR = new RegExp(`${P_TSO.source}(?:${P_TSR.source})${P_TSC.source}${P_NTG.source}${P_WS.source}\\/?>`, `gi`);
 var CL_TDE = new RegExp(`${P_WS.source}<\\/?td${P_TSX.source}${P_WS.source}(?:<\\/?td${P_TSX.source})?${P_WS.source}(?<ej1>${P_WS.source}(?:${CH_EJ.source}|${P_BL.source}))${P_WS.source}<\\/?td${P_TSX.source}${P_WS.source}(?:<\\/?td${P_TSX.source})?${P_WS.source}`, `gui`);
 var CL_TDT = new RegExp (`<\\/?td${P_TSX.source}`, `gui`);
 var CL_UHM = new RegExp(`<(?!\\/?(?:\\b(b|strong|i|em|ul|ol|li|h[1-9]|hrl|p|div|span|a|td)\\b))${P_TSX.source}`, `gi`);
@@ -182,19 +183,19 @@ var D_MD = new RegExp(`${P_DCD.source}?96`, `g`);
 var F_BK = new RegExp(`${P_WS.source}(${P_TSO.source}(?:${P_TSR.source}|${P_TSP.source})${P_TSC.source}${P_TSX.source})${P_WS.source}`, `gi`);
 var F_BL = new RegExp(`^${P_WS.source}(${P_BL.source})${P_WS.source}${P_ALB.source}+${P_WS.source}(${P_ALR.source})`, `gum`);
 var F_CMS = new RegExp(`(${P_ALR.source}),(${P_ALR.source})`, `g`);
-var F_IEJ = new RegExp(`${P_ALB.source}*<img\\s?(?:data|class)[\\-=]emoji="(.)"${P_TSX.source}${P_ALB.source}`, `gi`);
+var F_IEJ = new RegExp(`${P_ALB.source}*<img${P_WS.source}(?:data|class)[\\-=]emoji="(.)"${P_TSX.source}${P_ALB.source}`, `gi`);
 var F_NU = new RegExp(`([0-9]{1,2}\\.)${P_WS.source}${P_ALB.source}+${P_WS.source}(${P_ALR.source})`, `g`);
 var F_PNC = new RegExp(`(${P_ALR.source}+)\\s+([\\.!\\?,])`, `g`);
 var F_SBP = new RegExp(`<\\b(sub|sup)\\b${P_TSX.source}(${P_NTG.source})${P_TCC.source}`, `gi`);
 var F_TSP = new RegExp(`(<\\/?${P_NTG.source})${P_WS.source}(${P_ALB.source}+${P_WS.source}>)`, `gi`);
 var M_ATT= new RegExp(`(${P_WDD.source})${P_SEQ.source}(?:(${P_QTS.source})(${P_ACN.source})\\2|([^\\s>]+))(?=\\s+${P_WDD.source}${P_WS.source}=|${P_WS.source}\\/?>|$)`, `gi`);
 var M_HP = new RegExp(`${P_SNC.source}[\\.\\!\\?]`);
-var M_IGA = new RegExp(`<img${P_NTG.source}alt${P_SEQ.source}"([\\w\\p{P} ]+?)"\\s*${P_NTG.source}>`, `gui`);
-var M_LBL = new RegExp(`<ul${P_TSX.source}(${P_ACR.source})<\\/ul>`, `gi`);
-var M_LNU = new RegExp(`<ol${P_TSX.source}(${P_ACR.source})<\\/ol>`, `gi`);
+var M_IGA = new RegExp(`<img${P_NTG.source}alt${P_SEQ.source}"([\\w\\p{P} ]+?)"${P_WS.source}${P_NTG.source}>`, `gui`);
+var M_LBL = new RegExp(`<ul${P_TSX.source}(${P_ACR.source}?)<\\/ul>`, `gi`);
+var M_LNU = new RegExp(`<ol${P_TSX.source}(${P_ACR.source}?)<\\/ol>`, `gi`);
 var M_OPC = new RegExp(`^${P_PCT.source}+$`);
 var S_PRA = new RegExp(`${P_ALB.source}+${P_WS.source}${P_ALB.source}+|${P_ALB.source}+(?=\\S)`, `g`);
-var M_SYA = new RegExp(`(${P_WDD.source}):\\s?([^;]+);?\\s?`, `gi`);
+var M_SYA = new RegExp(`(${P_WDD.source}):${P_WS.source}([^;]+);?${P_WS.source}`, `gi`);
 
 // FONTS //
 
@@ -446,24 +447,20 @@ function cPL(rwP, wdC) {
 }
 
 function exH(raw) {
-  if (nNl(raw)) { return ""; };
-  raw = String(raw || "");
-  let htm = M_HTM.exec(raw) || "";
-  htm = htm ? htm[1] : "";
-  return htm;
+  let out = String(raw || ""), htm;
+  if (nNl(out)) { return raw; };
+  if (M_HTM.test(out)) {
+    htm = M_HTM.exec(out) || "";
+    return htm[1];
+  } else { return raw; };
 }
 
 function exP(raw) {
-  let scP = false, out = raw;
-  if (nNl(raw)) { return ""; };
-  raw = String(raw || "");
-  let pA = M_PAF.exec(raw) || "";
+  const out = String(raw || "");
+  let pA = M_PAF.exec(out);
+  pA = pA[1].replace(P_ATG, "").trim();
   const pAt = M_OTG.test(pA[1]), pAW = cWd(pA[1]);
-  pA = pAt ? "" : pA[1].replace(P_ATG, "").trim();
-  if (nNl(pA[1]) || pAt || pAW === 0) {
-    scP = false; out = "";
-  } else { scP = true; out = pA };
-  return { scP, raP: out };
+  return (pAt || pAW === 0) ? raw : pA;
 }
 
 function cHC(htm, clL) {
@@ -530,14 +527,13 @@ function cHF(src, stl) {
   let txt = src.trim();
   const lns = sHF(txt).filter(ln => !M_OTG.test(ln[0])).filter(ln => !M_OPC.test(ln[0])),
   noLs = lns.length, hEd = Math.min((noLs * 0.3), noLs),
-  fSt = Math.max(hEd,noLs-(noLs * 0.6)),
-  bdy = jHF(lns.slice(hEd, fSt)).replace(F_PRD, "."),
+  fSt = Math.max(hEd,noLs-(noLs * 0.6)), bdy = jHF(lns.slice(hEd, fSt)).replace(F_PRD, "."),
   hFr = jHF(lns.slice(fSt));
   let hdr = lns.slice(0, hEd), ftr = lns.slice(fSt);
   hdr = hdr.map(ln => [ln[0].replace(P_ATG, "").replace(F_PRD, "."), ln[1]]);
   ftr = ftr.map(ln => [ln[0].replace(P_ATG, "").replace(F_PRD, "."), ln[1]]);
   const wdC = cWd(jHF(hdr) + `\n` + bdy +`\n` + jHF(ftr));
-  if (dev) { console.log(`📐 PRECLEAN WORD COUNT: ${wdC}\n\n📐 LINES: ${noLs}`); };
+  if (dev) { console.log(`📐 PRECLEAN WORD COUNT: ${wdC}\n📐 LINES: ${noLs}`); };
   if (wdC < 30) { return { txt, hFr: "" }; };
   if (hdr.some(ln => CL_HR.test(ln[0]))) {
     if (dev) { console.log(`🗣️ HEADER MATCH(ES) 🗣️:\n${hdr.filter(ln => CL_HR.test(ln[0]))}`); };
@@ -817,7 +813,7 @@ function cBd(src, cBN, bNT) {
     }
     const mEj = mch.groups.emj, mNo = mch.groups.num, cn = mch.groups.cnt, clMc = eRx(mch[0]);
     const cPc = M_HP.test(cn), cLl = (new RegExp(`${clMc}`)).test(lLns), tOly = M_OTG.test(cn),
-    cHg = (new RegExp(`${P_OLO.source}\\s*(${clMc})\\s*${P_OLC.source}`)).test(txt);
+    cHg = (new RegExp(`${P_OLO.source}${P_WS.source}(${clMc})${P_WS.source}${P_OLC.source}`)).test(txt);
     const { bHg, bSc } = mBd(cn.split(S_WS));
     const isH = (bHg && cHg && !cLl && !cPc);
     if ((bHg || bSc) && dBd) {
@@ -992,52 +988,54 @@ function gMg(e) {
   const msg = GmailApp.getMessageById(mId),
   date = msg.getDate() ? Utilities.formatDate(msg.getDate(), Session.getScriptTimeZone(), "M/d/yyyy h:mm a") : "",
   sbj = String(msg.getSubject() || "").replace(CL_SJ, "").trim(),
-  sdr = dMg(msg.getFrom() || "unknown").replace(CL_SDR, "");
-  const dta = { mId, date, sbj, sdr };
-  let fm, rwCn = msg.getBody() || "";
-  if (szF(rwCn, 1024000, "RAW")) { return { ...dta, fm: fZ }; };
-  if (btF(rwCn.substring(10000, 20000))) { return { ...dta, fm: fBt }; };
-  rwCn = dMg(rwCn); const rwH = exH(rwCn);
+  sdr = dMg(msg.getFrom() || "unknown").replace(CL_SDR, ""),
+  rwCn = msg.getBody() || "", rwPn = msg.getPlainBody();
+  const dta = { mId, date, sbj, sdr, rwCn, rwPn };
+  if (dbg) { console.log(`🆗 COMPLETED: gMg 🆗`); };
+  return dta;
+}
+
+function pMg(e) {
+  const dta = gMg(e);
+  let fm, mCn, clH, clP, clL = "HTML", rwC = dta.rwCn;
+  if (szF(rwC, 1024000, "RAW")) { return { ...dta, fm: fZ }; };
+  if (btF(rwC.substring(10000, 20000))) { return { ...dta, fm: fBt }; };
+  rwC = dMg(rwC);
+  const scH = M_HTM.test(rwC), scP = M_PAF.test(rwC);
+  if (dev) { console.log(`❓ COMPLETE HTML? ${scH}\n❓ MISPLACED PLAIN TEXT? ${scP}`); };
+  const rwH = scH ? exH(rwC) : rwC, rwP = scP ? exP(rwC) : dMg(dta.rwPn);
   if (M_SCH.test(rwH)) { if (dev) { console.log(lHSm); }; return { ...dta, fm: fSm }; };
-  const { scP, raP } = exP(rwCn);
-  if (dev) { console.log(`❓ SCAM PLAIN TEXT? ${scP} ❓`); };
-  const rwP = scP ? raP : dMg(msg.getPlainBody());
   const hWc = cWd(rwH), pWc = cWd(rwP);
-  if (hWc < 5 && pWc < 5) { return { ...date, fm: fNC }; };
-  let clH, clP, clL = "HTML";
+  if (hWc < 5 && pWc < 5) { return { ...dta, fm: fNC }; };
   ({ out: clH, cMs, cWs, isTh } = cHC(rwH, clL));
   clH = clH.replace(CL_DTY, "");
   const mpH = CL_DTY.test(rwP) ? true : false;
-  clL = "Plain Text"; ({ cnP, isTp } = cPC(rwP, clL));
+  clL = "Plain Text";
+  ({ cnP, isTp } = cPC(rwP, clL));
   clP = !mpH ? cnP : clH;
   const isT = (isTh || isTp) ? true : false;
   ({ h, p, fm: fm } = cnF(clH, clP, mpH, isT));
   if (!h && !p) { return { ...dta, fm: fm }; };
-  if (h && p && dSm(clH, clP)) {
-    if (dev) { console.log(lSm); }; return { ...dta, fm: fSm };
-  }
+  if (h && p && dSm(clH, clP)) { if (dev) { console.log(lSm); }; return { ...dta, fm: fSm }; };
   const useP = !h && p ? true : false;
   if (useP && dev) { console.log(lNH); };
-  const pMg = useP ? clP : clH, { bg, bgC, stl } = mBc(pMg, sbj, sdr);
-  if (dev) {
-    console.log(`❓ BLOG? ${bg} \n❓ BLOG/CO? ${bgC}`);
-    ckL("📝 PRECLEAN CONTENT", pMg);
-  }
-  let mgCn; ({ txt: mgCn, hFr } = cHF(pMg, stl));
-  const snps = mFl(pMg, cMs, cWs, hFr), { cBN, bNT } = mBN(hFr);
+  const prM = useP ? clP : clH, { bg, bgC, stl } = mBc(prM, dta.sbj, dta.sdr);
+  if (dev) { console.log(`❓ BLOG? ${bg}\n❓ BLOG/CO? ${bgC}`); ckL("📝 PRECLEAN CONTENT", prM); };
+  ({ txt: mCn, hFr } = cHF(prM, stl));
+  const snps = mFl(prM, cMs, cWs, hFr), { cBN, bNT } = mBN(hFr);
   if (cBN) { snps.bNm = true; };
-  const cts = cEt(pMg, cBN, bNT);
+  const cts = cEt(prM, cBN, bNT);
   clL = "Pre-cleaned Message";
-  mgCn = useP ? mgCn.replace(CH_EJ, "") : pCl(mgCn, clL);
-  let wdC = cWd(mgCn);
-  if (dev) { ckL(`📝 POSTCLEAN CONTENT`, mgCn); console.log(`📐 SAP WORD COUNT: ${wdC}`); };
-  if (dbg) { console.log(`🆗 COMPLETED: gMg 🆗`); };
-  return { ...dta, mgCn: mgCn, bg: bg, bgC: bgC, cBN: cBN, bNT: bNT, cts: cts, snps: snps, wdC: wdC };
+  mCn = useP ? mCn.replace(CH_EJ, "") : pCl(mCn, clL);
+  const wdC = cWd(mCn);
+  if (dev) { ckL(`📝 POSTCLEAN CONTENT`, mCn); console.log(`📐 SAP WORD COUNT: ${wdC}`); };
+  if (dbg) { console.log(`🆗 COMPLETED: pMg 🆗`); };
+  return { ...dta, mCn: mCn, bg: bg, bgC: bgC, cBN: cBN, bNT: bNT, cts: cts, snps: snps, wdC: wdC };
 }
 
 function gCS(dta) {
   const { sbj, sdr, snps, bg, bgC } = dta;
-  let { bNm, eEj, wst, msT, snf } = snps, pMg = null, qMg = null;
+  let { bNm, eEj, wst, msT, snf } = snps, phM = null, qMg = null;
   const phS = snps.phs || [], qaS = snps.qa || [], fCs = { ...dta.cts };
   if ((bgC) && !CH_SF2) { bNm = null; };
   if (eEj && fCs.emj > 1) { fCs.emj--; };
@@ -1045,14 +1043,10 @@ function gCS(dta) {
   const cln = (t) => t ? clp(t) : null, sfX = cln(snf), evX = cln(eEj),
   sPh = phS.map(s => { const t = String(s || ""); return CH_PHE.test(t) ? t : `${t}...`; }).filter(Boolean),
   sQa = qaS.map(a => { const q = String(a || ""); return CH_PHE.test(q) ? q : `${q}...`; }).filter(Boolean);
-  if (sPh.length === 1) {
-    pMg = `Phrase(s): "${sPh[0]}"`;
-  } else if (sPh.length > 1) {
-    pMg = `Phrase(s):` + sPh.map(s => `${lBl}"${s}"`).join("");
+  if (sPh.length === 1) { phM = `Phrase(s): "${sPh[0]}"`; } else if (sPh.length > 1) {
+    phM = `Phrase(s):` + sPh.map(s => `${lBl}"${s}"`).join("");
   }
-  if (sQa.length === 1) {
-    qMg = `Q&A: "${sQa[0]}"`;
-  } else if (sQa.length > 1) {
+  if (sQa.length === 1) { qMg = `Q&A: "${sQa[0]}"`; } else if (sQa.length > 1) {
     qMg = `Q&A:` + sQa.map(a => `${lBl}"${a}"`).join("");
   }
   const rules = [
@@ -1069,7 +1063,7 @@ function gCS(dta) {
     { vl: fCs.hrl, lb: 'Horizontal Lines:', scr: 8 },
     { vl: fCs.itc, lb: 'Italics:', scr: 5 },
     { vl: fCs.nLs, lb: 'Numbered Lists:', scr: 3 },
-    { vl: pMg, txt: pMg, scr: 70 },
+    { vl: phM, txt: phM, scr: 70 },
     { vl: qMg, txt: qMg, scr: 70 },
     { vl: bNm, txt: `Bold Name in Signature`, scr: 20 },
     { vl: evX, txt: `Envelope Emoji: ${evX}`, scr: 50 },
@@ -1080,11 +1074,7 @@ function gCS(dta) {
   const tgr = []; let cSr = 0, pts = 0;
   rules.forEach(r => {
     if (r?.vl) {
-      pts++;
-      if (r.lb) {
-        tgr.push(` 🔸 ${r.lb} ${r.vl}`);
-      } else { tgr.push(` 🔸 ${r.txt}`); };
-      cSr += r.scr;
+      pts++; if (r.lb) { tgr.push(` 🔸 ${r.lb} ${r.vl}`); } else { tgr.push(` 🔸 ${r.txt}`); }; cSr += r.scr;
     }
   });
   if (dev) { console.log(`📐 MULTIPLICATION POINTS: ${pts}`); }
@@ -1123,16 +1113,12 @@ function aDc(src) {
     if (!__SAPLING_KEY) throw new Error("Missing SAPLING_API_KEY script property");
   }
   const txt = String(src || "");
-  if (!txt) return 0; const t0 = Date.now();
-  const cks = ckT(txt, 400), req = bAR(cks[0]),
-  res = UrlFetchApp.fetch(req.url, req);
+  if (!txt) { return 0; };
+  const t0 = Date.now(), cks = ckT(txt, 400), req = bAR(cks[0]), res = UrlFetchApp.fetch(req.url, req);
   if ((Date.now() - t0) > 5000) { console.log(skA); throw new Error("TIMEOUT"); };
-  let rty, num, total = 0, wtd = 0,
-  code = res.getResponseCode(), body = res.getContentText(),
+  let rty, num, total = 0, wtd = 0, code = res.getResponseCode(), body = res.getContentText(),
   rtE = 400 && M_XVL.test(body), mch = M_SCR.exec(body), jsn;
-  try {
-    jsn = JSON.parse(body);
-  } catch (e) {
+  try { jsn = JSON.parse(body); } catch (e) {
     console.error(`⛔ SAPLING ERROR ${code}: ${body}`);
     throw new Error(`⛔ SAPLING ERROR ${code}: ${body}`);
   }
@@ -1150,16 +1136,17 @@ function aDc(src) {
     if (mch) { raw = mch[1]; } else {
       try {
         raw = typeof jsn.score === "number" ? jsn.score : (jsn.data && typeof jsn.data.score === "number" ? jsn.data.score : null);
-      } catch(e) { raw = null; }
+      } catch(e) { raw = null; };
     }
-    num = Number(raw); if (!Number.isFinite(num) || num < 0) num = 0;
-    if (num > 1) num = 1; const fLt = cks[idx].length;
-    wtd += num * fLt; total += fLt;
+    num = Number(raw);
+    if (!Number.isFinite(num) || num < 0) { num = 0; };
+    if (num > 1) { num = 1; };
+    const fLt = cks[idx].length;
+    wtd += num * fLt;
+    total += fLt;
   });
   if (dbg) { console.log(`🆗 COMPLETED: aDc 🆗`); };
-  if (cks.length === 1) {
-    return num;
-  } else { return total ? (wtd / total) : 0; };
+  if (cks.length === 1) { return num; } else { return total ? (wtd / total) : 0; };
 }
 
 function onHomepage(e) {
@@ -1172,23 +1159,22 @@ function onHomepage(e) {
 
 function onGmailMessageOpen(e) {
   try {
-    var dta = gMg(e); if (!dta) { return onHomepage(e); };
+    var dta = pMg(e);
+    if (!dta) { return onHomepage(e); };
     if (dta.fm) {
       const out = { pct: null, message: null, fm: dta.fm };
       return bCd(out, dta.sbj, dta.sdr, dta.date, null, null, dta.mId, null);
     }
-    let cFS; let ch;
-    if (szF(dta.mgCn, 512000, "SCANE")) {
+    let cFS, ch;
+    if (szF(dta.mCn, 512000, "SCANE")) {
       ch = {}; cFS = fCZ;
     } else {
       ch = gCS(dta); cFS = rd2(ch.cSr);
     }
-    let out, aFS, spCn = dta.mgCn;
+    let out, aFS, spCn = dta.mCn;
     if (dta.wdC < 100) {
       aFS = fWc;
-      if (dev) {
-        console.log(`🛑 FILTER: WORD COUNT (${dta.wdC} words) - SKIPPING SAPLING 🛑`);
-      }
+      if (dev) { console.log(`🛑 FILTER: WORD COUNT (${dta.wdC} words) - SKIPPING SAPLING 🛑`); };
       const elmts = map(cFS);
       out = { pct: cFS, message: elmts, details: ch.smy || "" };
     } else {
