@@ -154,7 +154,7 @@ var CH_HTG = new RegExp (`<h\\d\\b${P_TSX.source}`, `gi`);
 var CH_ITC = new RegExp(`<(?:\\b(?:em|i)\\b|${P_NTG.source}font-style:${P_WS.source}italic)${P_TSX.source}`, `gi`);
 var CH_NUT = new RegExp(`<ol${P_TSX.source}`, `gi`);
 var CH_NUX = new RegExp(`${P_LBM.source}${P_STB.source}[${P_NUL.source}[\\.\\)]\\s+${P_NLB.source}+?(?:$|${P_LE.source})`, `gm`);
-var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)${P_WS.source}(?:absolutely|completely)${P_WS.source}(?:right|correct)|that(?:${P_APH.source}s|\\sis)${P_WS.source}a?${P_WS.source}(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)${P_WS.source}(?:clarify|be\\sclear)|would\\syou\\sbe${P_WS.source}(?:interested\\sin|open\\sto)|no${P_WS.source}(?:strings attached|pressure)|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)${P_WS.source}(?:so|very|)${P_WS.source}(?:much|)\\sfor\\syour${P_WS.source}(?:kind|thoughtful|kind${P_WS.source}(?:and|&|&amp;)\\sthoughtful)${P_WS.source}(?:reply|rsps|message|email|question)|i\\stake${P_WS.source}(?:full|tol|complete|)${P_WS.source}responsibility|i\\sjust${P_WS.source}(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SFP.source}?`, `gui`);
+var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)${P_WS.source}(?:absolutely|completely)${P_WS.source}(?:right|correct)|that(?:${P_APH.source}s|\\sis)${P_WS.source}a?${P_WS.source}(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)${P_WS.source}(?:clarify|be\\sclear)|would\\syou\\sbe${P_WS.source}(?:interested\\sin|open\\sto)|no${P_WS.source}(?:strings\\sattached|pressure)|totally\\sfair|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)${P_WS.source}(?:so|very|)${P_WS.source}(?:much|)\\sfor\\syour${P_WS.source}(?:kind|thoughtful|kind${P_WS.source}(?:and|&|&amp;)\\sthoughtful)${P_WS.source}(?:reply|rsps|message|email|question)|i\\stake${P_WS.source}(?:full|total|complete|)${P_WS.source}responsibility|i\\sjust${P_WS.source}(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SFP.source}?`, `gui`);
 var CH_QA = new RegExp(`(?:Short answer|Why|The (?:${P_SNC.source} *){1,2})\\? *[A-Z](?:${P_SNC.source} *){1,10}(?:${P_ATG.source})?\\.`, `gu`);
 var CH_SF = new RegExp(`${P_LBM.source}(${P_SF1.source}${P_SFP.source})${P_LEM.source}`, `m`);
 var CH_SF2 = new RegExp(`${P_LBM.source}(${P_SF2.source}${P_SFP.source})${P_LEM.source}`, `im`);
@@ -172,7 +172,7 @@ var CL_MBD = new RegExp(`${P_MD.source}{2}${P_AC1.source}${P_MD.source}{2}`, `g`
 var CL_MBT = new RegExp(`${P_MD.source}{3}${P_AC1.source}${P_MD.source}{3}`, `g`);
 var CL_MIT = new RegExp(`${P_MD.source}${P_AC1.source}${P_MD.source}`, `g`);
 var CL_MSK = new RegExp(`~~${P_AC1.source}~~`, "g");
-var CL_PVS = new RegExp(`\\b(?:On${P_WS.source}(?:${P_NU2.source}${P_WS.source})?(?:Jan|Feb|March|April|May|June|July|Aug|Sept|Oct|Nov|Dec)\\.?(?:${P_WS.source}${P_NU2.source},?)?${P_WS.source}\\d{4}(?:\\sat)?${P_WS.source}${P_NU2.source}:\\d{2}${P_WS.source}[AaPp][Mm],?${P_WS.source}${P_EML.source}\\swrote:|(?:(?:(?:Begin${P_WS.source}|${P_WS.source}-{2,10}${P_WS.source})[Ff]orwarded|[Oo]riginal)${P_WS.source}[Mm]essage)(?:${P_WS.source}-{2,6}${P_WS.source}|:)|(?:${P_BDO.source})?From)${P_ACR.source}$`);
+var CL_PVS = new RegExp(`\\b(?:On${P_WS.source}(?:${P_NU2.source}${P_WS.source})?(?:(?:Jan|Febr?)(?:uary|)|March|April|May|June|July|Aug(?:ust|)|(?:Sept|Nov|Dec)(?:ember|)|Oct(?:ober|))\\.?(?:${P_WS.source}\\d{1,2})?,?${P_WS.source}\\d{4}(?:${P_WS.source}at)?${P_WS.source}${P_NU2.source}:\\d{2}(?::\\d{2})?${P_WS.source}[AaPp][Mm](?:${P_WS.source}[A-Z]{3})?,?${P_WS.source}${P_EML.source}${P_WS.source}wrote:|(?:(?:(?:Begin${P_WS.source}|${P_WS.source}-{2,10}${P_WS.source})[Ff]orwarded|[Oo]riginal)${P_WS.source}[Mm]essage)(?:${P_WS.source}-{2,6}${P_WS.source}|:)|\n(?:${P_BDO.source})?From:\s${P_EML.source}\n)${P_ACR.source}$`);
 var CL_TBC = new RegExp(`^${P_WS.source}style=${P_QTS.source}${P_NTG.source}>`, `gm`);
 var CL_TFG = new RegExp(`<(figure|figcaption)${P_TSX.source}${P_ACN.source}${P_TCC.source}`, `gi`);
 var CL_TFR = new RegExp(`fr-original-style${P_SEQ.source}"[^">]*(?:"[^">]*"[^">]*)*"`, `gi`);
@@ -452,12 +452,13 @@ function cPL(rwP, wdC) {
   return rwP;
 }
 
-function xPH(raw) {
+function xHP(raw) {
   let xH = raw, xP = null;
   const out = String(raw || "");
   const fh = M_HTM.exec(out), pA = M_PAF.exec(out);
-  if (!nNl(fh)) { if (!cCn(pA[1])) { xH = fh[1].trim(); }; };
-  if (!nNl(pA)) { if (!cCn(fh[1])) { pA = pA[1].replace(P_ATG, "").trim(); }; };
+  if (!nNl(fh)) { if (fh[1]) { xH = fh[1].trim(); }; };
+  if (!nNl(pA)) { if (!cCn(pA[1])) { xP = pA[1].replace(P_ATG, "").trim(); }; };
+  if (nNl(xP)) { xP = null; };
   return { xH, xP };
 }
 
@@ -677,7 +678,7 @@ function dSm(clH, clP) {
   pTkn.forEach(token => { if (hTkn.has(token)) pMCn++; });
   const hSim = hTkn.size ? (hMCn / hTkn.size) : 0,
   pSim = pTkn.size ? (pMCn / pTkn.size) : 0;
-  const hIp = stH.includes(clP), pIh = clP.includes(stH);
+  const hIp = hMCn === hTkn.size, pIh = pMCn === pTkn.size;
   if (hSim < 0.4 && pSim < 0.4 && !hIp && !pIh) { scm = true; };
   if (dev) {
     console.log(`❓ INCLUDES:${tb}H/P? ${hIp}${tb}P/H? ${pIh}\n\n📐 SIMILARITY:${tb}H/P = ${pct(hSim)}%${tb}P/H = ${pct(pSim)}%`);
@@ -701,15 +702,13 @@ function ckT(txt, mL) {
 // MATCHERS & COUNTERS //
 
 function mBc(src, sbj, sdr) {
-  let txt = String(src || ""), bg = false, bgC = false, stl = false;
-  const slm = M_SLT.exec(sbj);
-  if (slm) { stl = true; if (dev) { console.log(`💵 SETTLEMENT MATCH: ${slm}`); }; };
+  let txt = String(src || ""), bg = false, bgC = false;
   const fPns = [CL_FR, CL_FRC, CL_HR, CL_LLN];
   fPns.forEach(fPn => { lIx(fPn); if (fPn.test(txt)) { bgC = true; }; });
   if (M_BSR.test(sdr) || CL_FRB.test(txt)) { bg = true; };
   if (M_CSJ.test(sbj) || bg)  { bgC = true; };
   if (dbg) { console.log(`🆗 COMPLETED: mBc 🆗`); };
-  return { bg, bgC, stl };
+  return { bg, bgC };
 }
 
 function mBd(wds) {
@@ -960,17 +959,17 @@ function gMg(e) {
 
 function pMg(e) {
   const dta = gMg(e);
-  let fm, mCn, clH, clP, rwC = dta.rwCn;
+  let fm, mCn, clH, clP, stl, rwC = dta.rwCn;
   if (szF(rwC, 1024000, "RAW")) { return { ...dta, fm: fSz }; };
   if (btF(rwC.substring(10000, 20000))) { return { ...dta, fm: fBt }; };
   rwC = dMg(rwC);
   const cmpH = M_HTM.test(rwC);
-  let { rwH, rwP } = xPH(rwC);
+  let { xH: rwH, xP: rwP } = xHP(rwC);
   rwH = cmpH ? rwH : rwC;
+  if (rwP === null) { rwP = dMg(dta.rwPn); };
   if (M_SCH.test(rwH)) {
     if (dev) { console.log(lHS); }; return { ...dta, fm: fSm };
   }
-  if (rwP === null) { rawP = dMg(dta.rwPn); };
   const hWc = cWd(rwH), pWc = cWd(rwP);
   if (hWc < 5 && pWc < 5) { return { ...dta, fm: fNC }; };
   ({ out: clH, cMs, cWs, isTh } = cHC(rwH, "HTML"));
@@ -987,11 +986,13 @@ function pMg(e) {
   const useP = !h && p ? true : false;
   if (useP && dev) { console.log(lNH); };
   const prM = useP ? clP : clH;
-  const { bg, bgC, stl } = mBc(prM, dta.sbj, dta.sdr);
+  const { bg, bgC } = mBc(prM, dta.sbj, dta.sdr);
   if (dev) {
     console.log(`❓ BLOG? ${bg}\n❓ BLOG/CO? ${bgC}`);
     ckL("📝 PRECLEAN CONTENT", prM);
   }
+  const slm = M_SLT.exec(dta.sbj);
+  if (slm) { stl = true; if (dev) { console.log(`💵 SETTLEMENT MATCH: ${slm}`); }; };
   ({ txt: mCn, hFr } = cHF(prM, stl));
   const snps = mFl(prM, cMs, cWs, hFr), { cBN, bNT } = mBN(hFr);
   if (cBN) { snps.bNm = true; };
@@ -1019,7 +1020,7 @@ function gCS(dta) {
   if (eEj && fCs.emj > 1) { fCs.emj--; };
   if (M_AZO.test(sbj) || M_AZN.test(sdr)) { fCs.eps = 0 };
   const cln = (t) => t ? clp(t) : null;
-  const sfX = cln(snf), evX = cln(eEj), sPh = gPh(phs), sQa = gPh(qaS);
+  const sfX = cln(snf), evX = cln(eEj), sPh = gPh(phS), sQa = gPh(qaS);
   if (sPh.length === 1) {
     phM = `Phrase(s): "${sPh[0]}"`;
   } else if (sPh.length > 1) {
@@ -1060,14 +1061,14 @@ function gCS(dta) {
     }
   });
   cSr = Math.min(100, (Math.sqrt(cSr * (pts * 10))));
-  if (dev) { console.log(`📐 MULTIPLICATION POINTS: ${pts}\n📐 SCANE SUBtol: ${rd2(cSr)}`); };
+  if (dev) { console.log(`📐 MULTIPLICATION POINTS: ${pts}\n📐 SCANE SUBTOTAL: ${rd2(cSr)}`); };
   if (bg) { cSr -= (cSr * 0.20); };
   const flgs = {
     phs: phS.length > 0, qa: qaS.length > 0, snf: !!snf,
     bNm: !!bNm, eEj: !!eEj, wst: !!wst, msT: !!msT, bg, bgC
   }
   const eSp = { phs: phS, qa: qaS, snf: sfX, eEj: evX };
-  const smy = `🚩 AI ELEMENTS FOUND: 🚩\n` + (tgr.length ? sbHg + tgr.map(t => t).join("\n") : `None`);
+  const smy = `🚩 AI ELEMENTS FOUND: 🚩\n` + (tgr.length ? tgr.map(t => t).join("\n") : `None`);
   if (dbg) { console.log(`🆗 COMPLETED: gCS 🆗`); }
   return { smy, tgr, flgs, snps: eSp, cts: fCs, cSr: cSr };
 }
