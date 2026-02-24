@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = true, dCl = false, dBd = false;
+const dev = true, dbg = false, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -698,7 +698,7 @@ function btF(raw) {
   return false;
 }
 
-function dSm(clH, clP, hWc, pWc) {
+function dSm(clH, clP) {
   let scm = false, hMCn = 0, pMCn = 0;
   clH = pCl(clH, "Detect Scam"); clP = stp(clP);
   const gtTkn = (txt) => new Set(lCs(String(txt || "")).match(M_TKN) || []);
@@ -1025,7 +1025,7 @@ function pMg(e) {
   const isT = (isTh || isTp) ? true : false;
   ({ h, p, fm: fm } = cnF(clH, clP, mpH, isT));
   if (!h && !p) { return { ...dta, fm }; };
-  if (h && p && dSm(clH, clP, hWc, pWc)) {
+  if (h && p && dSm(clH, clP)) {
     if (dev) { console.log(lSm); }; return { ...dta, fm: fSm };
   }
   const useP = !h && p ? true : false;
