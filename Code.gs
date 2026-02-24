@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = false, dCl = false, dBd = false;
+const dev = true, dbg = true, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -327,6 +327,7 @@ function cHS(htm) {
     }
     htm = res;
   });
+  if (dbg) { console.log(`🆗 COMPLETED: cHS 🆗`) };
   return htm;
 }
 
@@ -450,11 +451,13 @@ function cPL(rwP, wdC) {
 }
 
 function xHP(raw) {
+  lIx(P_ATG);
   let xH = raw, xP = null;
   const out = String(raw || "");
   const fh = M_HTM.exec(out), pA = M_PAF.exec(out);
-  if (!nNl(fh)) { if (fh[1]) { xH = fh[1].trim(); }; };
-  if (!nNl(pA)) { if (pA[1]) { xP = cTg(pA[1]).trim(); }; };
+  if (nNl(fh)) { xH = raw; } else { xH = fh[1].trim(); };
+  if (nNl(pA)) { xP = null; } else { xP = pA[1].trim(); };
+  if (nNl(xP) || (cWd(xP) < cWd(xH) / 4) || P_ATG.test(xP)) { xP = null; };
   if (dbg) { console.log(`📝 EXTRACTED PLAIN TEXT:\n${xP}`); };
   return { xH, xP };
 }
@@ -646,7 +649,7 @@ function pCl(src, clL) {
 
 // FILTERS //
 
-function cnF(clH, clP, mpH, isT) {
+function cnF(clH, clP, isT) {
   let h = true, p = true, fm = "", r = "", v = "";
   const hWc = cWd(clH), pWc = cWd(clP), lbD = rd2(pWc / clP.split("\n").length);
   const lg = isT ? rNT : rNC, pTp = M_NOP.exec(clP), nLb = ((lbD > 40) || !P_ALB.test(clP)), hLW = hWc < 5, pLW = pWc < 5;
@@ -654,7 +657,7 @@ function cnF(clH, clP, mpH, isT) {
     console.log(`🚰 CNT. FILTER: 🚰${tb}H. WORD COUNT: ${hWc}${tb}P. WORD COUNT: ${pWc}${tb}LINE BRK. DENSITY: ${lbD}`);
   }
   if (nNl(clH) || hLW) { h = false; v = `HTML`; };
-  if (nNl(clP) || pLW || mpH || pTp || nLb) { p = false; v = `PLAIN TEXT`; };
+  if (nNl(clP) || pLW || pTp || nLb) { p = false; v = `PLAIN TEXT`; };
   if (!h && !p) {
     fm = isT ? fNT : fNC;
     if (dev) { console.log(`🛑 ${lg} 🛑`); };
@@ -663,7 +666,6 @@ function cnF(clH, clP, mpH, isT) {
   if (!h || !p) {
     const rns = [
       { c: hLW || pLW, r: rWc },
-      { c: mpH, r: `MISPLACED HTML` },
       { c: nLb, r: `LINE BREAK DENSITY (${lbD})` },
       { c: pTp, r: `PLACEHOLDER/TEMPLATE (${pTp})` },
     ];
@@ -713,6 +715,7 @@ function dSm(clH, clP) {
     console.log(`🔎 INCLUDES 🔎${tb}SMM: ${smM}${tb}SMT: ${smT}${tb}INCLUDES? ${incl}`);
     console.log(`🔎 SIMILARITY: 🔎${tb}H/P = ${tPt(hSim)}%${tb}P/H = ${tPt(pSim)}%`);
   }
+  if (dbg) { console.log(`🆗 COMPLETED: dSm 🆗`); };
   return scm;
 }
 
@@ -1019,11 +1022,12 @@ function pMg(e) {
   if (hWc < 5 && pWc < 5) { return { ...dta, fm: fNC }; };
   ({ out: clH, cMs, cWs, isTh } = cHC(rwH, "HTML"));
   clH = clH.replace(CL_DTY, "");
-  ({ cnP, isTp } = cPC(rwP, "Plain Text"));
+  ({ cnP: clP, isTp } = cPC(rwP, "Plain Text"));
   const mpH = CL_DTY.test(rwP) ? true : false;
-  clP = !mpH ? cnP : clH;
+  if (mpH) { clP = clP.replace(P_ATG, ""); };
   const isT = (isTh || isTp) ? true : false;
-  ({ h, p, fm: fm } = cnF(clH, clP, mpH, isT));
+  ckL(`📝 HTML`, clH); ckL(`📝 PLAIN TEXT`, clP);
+  ({ h, p, fm: fm } = cnF(clH, clP, isT));
   if (!h && !p) { return { ...dta, fm }; };
   if (h && p && dSm(clH, clP)) {
     if (dev) { console.log(lSm); }; return { ...dta, fm: fSm };
