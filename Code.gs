@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = false, dbg = false, dCl = false, dBd = false;
+const dev = true, dbg = false, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -102,6 +102,7 @@ var P_DSH = /-{0,2}/;
 var P_DTP = /!DOCTYPE/i;
 var P_EJH = /^\s*/;
 var P_EML = /[A-Za-z\s<>@\.]+/;
+var P_HLK = /<(h\d|a\b)/i;
 var P_LS = /[\n\r>]/;
 var P_LBM = /(?:^|[\n\r]|>)/;
 var P_LE = /[\n\r<]/;
@@ -122,7 +123,7 @@ var P_PCT = /[,:\?!@\(\);<>\/\\=\|]/;
 var P_QTS = /["']/;
 var P_SF1 = /(?:(?:(?:(?:(?:Kind|Warm)(?:est|)|Best|Thank(?:s|\s*[Yy]ou)\s*(?:and|&)\s*([Kk]ind)?)\s*[Rr]egards?)|Best|Warmly|Regards))/;
 var P_SF2 = /Sincerely(?: [Yy]ours|)|Thank(?:s| [Yy]ou)(?: for [\w ]+?)|Yours(?: [Tt]ruly|Sincerely)?|Signed/;
-var P_SFP = /[,:!\.\?]?/;
+var P_SFP = /[:!\.\?]/;
 var P_SNC = /[\w\p{P}]+?/u;
 var P_SEQ = /\s*=\s*/;
 var P_STB = /[ \t]*/;
@@ -145,7 +146,7 @@ var S_WS = /\s+/g;
 // STRINGS //
 
 var CH_BD = new RegExp(`(?<emj>${CH_EJ.source} *)?${P_BDO.source}(?<num>[${P_NUL.source}\\. +)?(?<cnt>${P_ACN.source})${P_BDC.source}`, `gui`);
-var CH_BNU = new RegExp(`(?:${P_SF1.source}|${P_SF2.source})${P_SFP.source}(?:${P_ATG.source}|)${P_ALB.source}+${P_BDO.source}(${P_ACN.source})${P_BDC.source}`, `gim`);
+var CH_BNU = new RegExp(`(?:${P_SF1.source}|${P_SF2.source})${P_SFP.source}?(?:${P_ATG.source}|)${P_ALB.source}+${P_BDO.source}(${P_ACN.source})${P_BDC.source}`, `gim`);
 var CH_BEJ = new RegExp(`${P_LBM.source}(${CH_EJ.source}${P_WS.source}[A-Za-z\d]${P_NLB.source}${P_NEJ.source}+?)${P_LBM.source}`, `gumi`);
 var CH_BLN = new RegExp(`${P_EJH.source}${CH_EJ.source} ? *${P_LRN.source}`, `u`);
 var CH_BLT = new RegExp(`<ul${P_TSX.source}`, `gi`);
@@ -156,8 +157,8 @@ var CH_NUT = new RegExp(`<ol${P_TSX.source}`, `gi`);
 var CH_NUX = new RegExp(`${P_LBM.source}${P_STB.source}[${P_NUL.source}[\\.\\)]\\s+${P_NLB.source}+?(?:$|${P_LE.source})`, `gm`);
 var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)${P_WS.source}(?:absolutely|completely)${P_WS.source}(?:right|correct)|that(?:${P_APH.source}s|\\sis)${P_WS.source}a?${P_WS.source}(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)${P_WS.source}(?:clarify|be\\sclear)|would\\syou\\sbe${P_WS.source}(?:interested\\sin|open\\sto)|no${P_WS.source}(?:strings\\sattached|pressure)|totally\\sfair|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)${P_WS.source}(?:so|very|)${P_WS.source}(?:much|)\\sfor\\syour${P_WS.source}(?:kind|thoughtful|kind${P_WS.source}(?:and|&|&amp;)\\sthoughtful)${P_WS.source}(?:reply|rsps|message|email|question)|i\\stake${P_WS.source}(?:full|total|complete|)${P_WS.source}responsibility|i\\sjust${P_WS.source}(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SFP.source}?`, `gui`);
 var CH_QA = new RegExp(`(?:Short answer|Why|The (?:${P_SNC.source} *){1,2})\\? *[A-Z](?:${P_SNC.source} *){1,10}(?:${P_ATG.source})?\\.`, `gu`);
-var CH_SF = new RegExp(`${P_LBM.source}(${P_SF1.source}${P_SFP.source})${P_LEM.source}`, `m`);
-var CH_SF2 = new RegExp(`${P_LBM.source}(${P_SF2.source}${P_SFP.source})${P_LEM.source}`, `im`);
+var CH_SF = new RegExp(`${P_LBM.source}(${P_SF1.source}${P_SFP.source}?)${P_LEM.source}`, `m`);
+var CH_SF2 = new RegExp(`${P_LBM.source}(${P_SF2.source}${P_SFP.source}?)${P_LEM.source}`, `im`);
 var CL_CLB = new RegExp(`(?:${P_STB.source}${P_ALB.source})+${P_STB.source}|[ \\t]{8,}`, `g`);
 var CL_CMT = new RegExp(`<!(?${P_DTP.source})${P_DSH.source} *\\[?${P_CMI.source}\\]? *${P_DSH.source}>${P_DSH.source}>?|\\/\\*\\[?${P_CMI.source}\\*\\/|^ *${P_CMI.source} *-{2}>$`, `gim`)
 var CL_DTY = new RegExp(`<${P_WS.source}${P_DTP.source}${P_NTG.source}>`, `i`);
@@ -191,6 +192,7 @@ var F_IEJ = new RegExp(`${P_ALB.source}*<img${P_WS.source}(?:data|class)[\\-=]em
 var F_NU = new RegExp(`([0-9]{1,2}\\.)${P_WS.source}${P_ALB.source}+${P_WS.source}(${P_ALR.source})`, `g`);
 var F_PNC = new RegExp(`(${P_ALR.source}+)\\s+([\\.!\\?,])`, `g`);
 var F_SBP = new RegExp(`<\\b(sub|sup)\\b${P_TSX.source}(${P_NTG.source})${P_TCC.source}`, `gi`);
+var F_SLB = new RegExp(`(?<!${P_SFP.source}|${P_BL.source}) *${P_ALB.source} *(?![A-Z]||${P_BL.source}|\\d+?\\s[A-Z])`, `g`);
 var F_TSP = new RegExp(`(<\\/?${P_NTG.source})${P_WS.source}(${P_ALB.source}+${P_WS.source}>)`, `gi`);
 var M_ATT= new RegExp(`(${P_WDD.source})${P_SEQ.source}(?:(${P_QTS.source})(${P_ACN.source})\\2|([^\\s>]+))(?=\\s+${P_WDD.source}${P_WS.source}=|${P_WS.source}\\/?>|$)`, `gi`);
 var M_HP = new RegExp(`${P_SNC.source}[\\.\\!\\?]`);
@@ -384,9 +386,7 @@ function cBT(out) {
       let dt = 1, i = st + ol;
       while (i < out.length) {
         const rt = out.slice(i);
-        if ((new RegExp(`^<${tg}[\\s>]`, "i")).test(rt)) {
-          dt++; i += ol; continue;
-        }
+        if ((new RegExp(`^<${tg}[\\s>]`, "i")).test(rt)) { dt++; i += ol; continue; };
         if ((new RegExp(`^<\\/${tg}>`, "i")).test(rt)) {
           dt--;
           if (dt === 0) {
@@ -413,8 +413,8 @@ function cvL(txt) {
     for (let i = 0; i < nL[1].length;) {
       const nLi = M_LI.exec(nL[1]);
       if (nNl(nLi)) { continue; } else if (nLi) {
-        const nLiPtn = new RegExp(`${eRx(nLi[1])}`); i++;
-        txt = txt.replace(nLiPtn, `${i}. ${nLi[2].replace(P_ALB, " ")}`);
+        const nPt = new RegExp(`${eRx(nLi[1])}`); i++;
+        txt = txt.replace(nPt, `${i}. ${nLi[2].replace(P_ALB, " ")}`);
       }
     }
   }
@@ -432,18 +432,21 @@ function cvL(txt) {
 }
 
 function fxP(out) {
-  const ptns = [ [F_PNC, "$1$2"], [F_NU, "$1 $2"], [F_CMS, "$1, $2"], [F_CML, "$1, $2"] ];
+  const ptns = [
+    [F_PNC, "$1$2"], [F_NU, "$1 $2"],
+    [F_CMS, "$1, $2"], [F_CML, "$1, $2"]
+  ];
   out = rRx(out, ptns, "Fix Punctuation");
   return out;
 }
 
 function cPL(rwP, wdC) {
-  let pLnk;
+  let plk;
   for (let i = 0; i < wdC; i++) {
-    while ((pLnk = CL_LKI.exec(rwP)) !== null) {
-      if (!M_NAT.test(pLnk[1])) {
-        const pLp = new RegExp(`${eRx(pLnk[0]) || ""}`);
-        rwP = rwP.replace(pLp, `${pLnk[1]}`);
+    while ((plk = CL_LKI.exec(rwP)) !== null) {
+      if (!M_NAT.test(plk[1])) {
+        const pLp = new RegExp(`${eRx(plk[0]) || ""}`);
+        rwP = rwP.replace(pLp, `${plk[1]}`);
       }
     }
   }
@@ -452,12 +455,10 @@ function cPL(rwP, wdC) {
 
 function xHP(raw) {
   lIx(P_ATG);
-  let xH = raw, xP = null;
-  const out = String(raw || "");
-  const fh = M_HTM.exec(out), pA = M_PAF.exec(out);
-  if (nNl(fh)) { xH = raw; } else { xH = fh[1].trim(); };
-  if (nNl(pA)) { xP = null; } else { xP = pA[1].trim(); };
-  if (nNl(xP) || (cWd(xP) < cWd(xH) / 4) || P_ATG.test(xP)) { xP = null; };
+  const out = String(raw || ""), fh = M_HTM.exec(out), pA = M_PAF.exec(out);
+  const xH = nNl(fh) ? raw : fh[1].trim();
+  let xP = nNl(pA) ? null : pA[1].trim();
+  if (nNl(xP) || (cWd(xP) < (cWd(xH) / 4)) || P_ATG.test(xP)) { xP = null; };
   if (dbg) { console.log(`📝 EXTRACTED PLAIN TEXT:\n${xP}`); };
   return { xH, xP };
 }
@@ -465,10 +466,10 @@ function xHP(raw) {
 function cHC(htm, clL) {
   if (nNl(htm)) {
     if (dbg) { console.log(`🛑 NO HTML: SKIPPING HTML CLEANING 🛑`); };
-    return { out: htm, cMs: false, cWs: false, isTh: false };
+    return { out: htm, cMs: false, cWs: false, thH: false };
   }  
   let out = String(htm || "");
-  const isTh = CL_PVS.test(out), cWs = CH_WS.test(out), cMs = CH_MS.test(out);
+  const thH = CL_PVS.test(out), cWs = CH_WS.test(out), cMs = CH_MS.test(out);
   out = out.replace(CL_PVS, "$1");
   const chs = [
     [fxT, "f", "fxT"],        [F_BK, "\n$1\n", "F_BK"], [CL_HDN, "", "CL_HDN"],     [CL_HDS, "", "CL_HDS"],
@@ -482,17 +483,17 @@ function cHC(htm, clL) {
   ];
   out = rRx(out, chs, clL); out = clp(out);
   if (dbg) { console.log(`🆗 COMPLETED: cHC 🆗`); };
-  return { out, cMs, cWs, isTh };
+  return { out, cMs, cWs, thH };
 }
 
 function cPC(ptx, clL) {
   if (nNl(ptx)) {
     if (dbg) { console.log(`🛑 NO PLAIN TEXT: SKIPPING PLAIN CLEANING 🛑`); };
-    return { out: ptx, isTp: false };
+    return { out: ptx, phH: false };
   }
   let out = String(ptx || "");
-  const isTp = CL_PVS.test(out);
-  if (isTp) { out = out.replace(CL_PVS, "$1") };
+  const phH = CL_PVS.test(out);
+  if (phH) { out = out.replace(CL_PVS, "$1") };
   out = cTg(out);
   const chs = [
     [CL_UDZ, "", "CL_UDZ"],   [CL_UDS, " ", "CL_UDS"],  [CL_UDD, "-", "CL_UDD"],
@@ -506,7 +507,7 @@ function cPC(ptx, clL) {
   const pWC = cWd(out);
   out = cPL(out, pWC); out = clp(out);
   if (dbg) { console.log(`🆗 COMPLETED: cPC 🆗`); };
-  return { cnP: out, isTp };
+  return { cnP: out, phH };
 }
 
 function sHF(txt) {
@@ -521,30 +522,35 @@ function sHF(txt) {
   return out;
 }
 
-function jHF(cks) {
-  let jd = "";
-  for (let i = 0; i < cks.length; i++) {
-    jd += cks[i][0] + cks[i][1];
-  }
-  return jd;
-}
-
-function cTP(txt) { return txt.map(ln => [cTg(ln[0]).replace(F_PRD, "."), ln[1]]); };
 function cLT(txt) { return CL_LLN.test(txt); };
-function fCl(lLns, rgx) { return (lLns.map(ln => ln[0].match(rgx))).filter(Boolean); };
-function fLn(ln, rgx) { return ln.filter(w => rgx.test(w)) };
+function fLn(ln, rx) { return ln.filter(w => rx.test(w)) };
+function jHF(cks) { let jd = ""; for (let i = 0; i < cks.length; i++) { jd += cks[i][0] + cks[i][1]; }; return jd; };
+
+function mSI(l1, l2) {
+  let lMc = false;
+  if (l1.length > 0) {
+    l1 = [...new Set(l1)];
+    if (l1.length > 0) {
+      if (l1.length > 1) { lMc = true; };
+      if (l2.length > 0) { l2 = [...new Set(l2)]; if (l2.length > 0) { lMc = true; }; };
+    }
+    if (dev && lMc) { console.log(`🌐 SOCIAL MATCH(ES) 🌐:${tb}${l1}${tb}${l2}`); };
+  }
+  return lMc;
+}
 
 function cHF(src, stl) {
   let txt = src.trim();
-  const lns = sHF(txt).filter(ln => !M_OTG.test(ln[0])).filter(ln => !M_OPT.test(ln[0])),
-  noLs = lns.length, hEd = Math.min((noLs * 0.3), noLs),
-  fSt = Math.max(hEd,noLs-(noLs * 0.6)), bdy = jHF(lns.slice(hEd, fSt)).replace(F_PRD, "."),
-  hFr = jHF(lns.slice(fSt));
+  txt = fxS(txt);
+  const lns = sHF(txt).filter(ln => !M_OTG.test(ln[0])).filter(ln => !M_OPT.test(ln[0]));
+  const lsL = lns.length, hEd = Math.min((lsL * 0.3), lsL), fSt = Math.max(hEd, lsL - (lsL * 0.8)),
+  bdy = jHF(lns.slice(hEd, fSt)).replace(F_PRD, "."), hFr = jHF(lns.slice(fSt));
   let hdr = lns.slice(0, hEd), ftr = lns.slice(fSt);
-  hdr = cTP(hdr); ftr = cTP(ftr);
+  hdr = hdr.map(ln => [cTg(ln[0]).replace(F_PRD, "."), ln[1]]);
+  ftr = ftr.map(ln => [cTg(ln[0]).replace(F_PRD, "."), ln[1]]);
   const wdC = cWd(jHF(hdr) + `\n` + bdy +`\n` + jHF(ftr));
-  if (dev) { console.log(`📐 PRECLEAN WORD COUNT: ${wdC}\n📐 LINES: ${noLs}`); };
-  if (wdC < 30) { return { txt, hFr: "" }; };
+  if (dev) { console.log(`📐 PRECLEAN WORD COUNT: ${wdC}\n📐 LINES: ${lsL}`); };
+  if (wdC < 30) { return { txt, ftr: txt, hFr: txt }; };
   const hps = [CL_HR, CL_HFF];
   hps.forEach(hp => {
     if (hdr.some(ln => hp.test(ln[0]))) {
@@ -552,70 +558,47 @@ function cHF(src, stl) {
       hdr = hdr.filter(ln => !hp.test(ln[0]));
     }
   });
-  hdr = jHF(hdr); let lLns, fLns;
-  if (ftr.length >= 20) {
-    lLns = ftr.slice(-15); fLns = ftr.slice(0, -15);
-  } else {
-    lLns = ftr.slice(-8); fLns = ftr.slice(0, -8);
-  }
-  const lLn = lLns[lLns.length - 1], addM1 = fCl(lLns, CL_AD), addM2 = fCl(lLns, CL_AD2);
-  if (addM1 || addM2) {
-    for (let i = 0; i < lLns.length; i++) {
-      const aLn1 = lLns[i] || [] || [], aLn2 = lLns[i + 1] || [] || [],
-      aLn3 = lLns[i + 2] || [] || [], mA1 = CL_AD.exec(aLn1[0] || []),
-      mA2 = CL_AD2.exec(aLn2[0] || []) || CL_AD.exec(aLn2[0] || []),
-      mA3 = CL_AD2.exec(aLn3[0] || []) || CL_AD.exec(aLn3[0] || []);
-      if (nNl(aLn1) || !mA1) { continue; };
+  hdr = jHF(hdr);
+  const lF = ftr.length >= 20;
+  let lLs = lF ? ftr.slice(-15) : ftr.slice(-8),
+  fLs = lF ? ftr.slice(0, -15) : ftr.slice(0, -8);
+  const lLn = lLs[lLs.length - 1];
+  if ((lLs.map(ln => ln[0].match(CL_AD))).filter(Boolean) || (lLs.map(ln => ln[0].match(CL_AD2))).filter(Boolean)) {
+    for (let i = 0; i < lLs.length; i++) {
+      const aL1 = lLs[i] || [], aL2 = lLs[i + 1] || [], aL3 = lLs[i + 2] || [];
+      const mA1 = CL_AD.exec(aL1[0] || []),
+      mA2 = CL_AD.exec(aL2[0] || []) || CL_AD2.exec(aL2[0] || []),
+      mA3 = CL_AD.exec(aL3[0] || []) || CL_AD2.exec(aL3[0] || []);
+      if (nNl(aL1) || !mA1) { continue; };
       if (mA1) {
         if (dev) {
           console.log(`🏠 ADDRESS MATCH(ES): ${tb}${mA1}` + (mA2 ? `${tb}${mA2}` : '') + (mA3 ? `${tb}${mA3}` : ''));
         }
         if (mA2) {
-          if (mA3) { lLns.splice(i,3); } else if (!mA3 || aLn2 === lLn) { lLns.splice(i,2); };
-        } else { lLns.splice(i); };
-      } else if ((!mA2 && !mA3) || aLn1 === lLn) { lLns.splice(i); };
+          if (mA3) { lLs.splice(i,3); } else if (!mA3 || aL2 === lLn) { lLs.splice(i,2); };
+        } else { lLs.splice(i); };
+      } else if ((!mA2 && !mA3) || aL1 === lLn) { lLs.splice(i); };
     }
   }
-  let cS = false;
-  for (let j = 0; j < lLns.length; j++) {
-    const l1 = (String(lLns[j]).trim()).split(S_WS), l2 = (String(lLns[j + 1]).trim()).split(S_WS);
+  let sMc = false, iMc = false;
+  for (let j = 0; j < lLs.length; j++) {
+    const l1 = (String(lLs[j]).trim()).split(S_WS);
+    const l2 = (String(lLs[j + 1]).trim()).split(S_WS);
     if (l1.length === 0 && l2.length === 0) { break; };
-    let sM1 = fLn(l1, CL_SC), sM2 = fLn(l2, CL_SC), iM1 = fLn(l1, CL_SC2), iM2 = fLn(l2, CL_SC2);
-    let s2lg = ``, i2lg = ``, sMch = false, iMch = false;
-    if (sM1.length > 0) {
-      sM1 = [...new Set(sM1)];
-      if (sM1.length > 0) {
-        if (sM1.length > 1) { sMch = true; };
-        if (sM2.length > 0) {
-          sM2 = [...new Set(sM2)];
-          if (sM2.length > 0) { sMch = true; s2lg = tb + sM2; };
-        }
-      }
-      if (dev && sMch) { console.log(`🌐 SOCIAL MATCH(ES) 🌐:${tb}${sM1}${s2lg}`); };
-    }
-    if (iM1.length > 0) {
-      iM1 = [...new Set(iM1)];
-      if (iM1.length > 0) {
-        if (iM1.length > 1) { iMch = true; };
-        if (iM2.length > 0) {
-          iM2 = [...new Set(iM1)];
-          if (iM2.length > 0) { iMch = true; i2lg = tb + iM2; };
-        }
-      }
-      if (dev && iMch) { console.log(`🌐 INTERACT MATCH(ES) 🌐:${tb}${iM1}${i2lg}`); };
-    }
-    if (sMch || iMch) { cS = true; break; };
+    const sM1 = fLn(l1, CL_SC), sM2 = fLn(l2, CL_SC), iM1 = fLn(l1, CL_SC2), iM2 = fLn(l2, CL_SC2);
+    sMc = mSI(sM1, sM2); iMc = mSI(iM1, iM2);
+    if (sMc || iMc) { break; };
   }
   const lps = [CL_SC, CL_SC2];
-  if (cS) { lps.forEach(lp => { lLns = lLns.filter(ln => !lp.test(ln[0])); }); };
-  if (lLns.some(ln => cLT(ln[0]))) {
+  if (sMc || iMc) { lps.forEach(lp => { lLs = lLs.filter(ln => !lp.test(ln[0])); }); };
+  if (lLs.some(ln => cLT(ln[0]))) {
     if (dev) {
-      console.log(`🔚 LAST LINES MATCH(ES) 🔚:\n${lLns.filter(ln => cLT(ln[0]))}`);
+      console.log(`🔚 LAST LINES MATCH(ES) 🔚:\n${lLs.filter(ln => cLT(ln[0]))}`);
     }
-    lLns = lLns.filter(ln => !cLT(ln[0]));
+    lLs = lLs.filter(ln => !cLT(ln[0]));
   }
-  if (!stl) { lLns = lLns.map(ln => [ln[0].replace(CL_OPT, ""), ln[1]]); };
-  ftr = (nNl(lLns)) ? fLns : fLns.concat(lLns);
+  if (!stl) { lLs = lLs.map(ln => [ln[0].replace(CL_OPT, ""), ln[1]]); };
+  ftr = (nNl(lLs)) ? fLs : fLs.concat(lLs);
   const sF = jHF(ftr), fps = [CL_FR, CL_FRB, CL_FRC, CL_HFF];
   fps.forEach(fp => {
     if (ftr.some(ln => fp.test(ln[0]))) {
@@ -624,13 +607,13 @@ function cHF(src, stl) {
     }
   });
   ftr = jHF(ftr);
-  const hdBy = (hdr + `\n` + bdy), prndWc = cWd(hdBy) + cWd(ftr);
+  const hB = (hdr + `\n` + bdy), prndWc = cWd(hB) + cWd(ftr);
   if (dev) { console.log(`📐 PRUNED WORD COUNT: ${prndWc}`); };
   if (prndWc <= (wdC / 4)) {
     if (dev) { console.log(`🛑 OVER-PRUNED: USING SAFE FOOTER 🛑`); };
     ftr = sF;
   }
-  txt = clp(hdBy + `\n` + ftr);
+  txt = clp(hB + `\n` + ftr);
   if (dbg) { console.log(`🆗 COMPLETED: cHF 🆗`); };
   return { txt, hFr };
 }
@@ -638,9 +621,8 @@ function cHF(src, stl) {
 function pCl(src, clL) {
   let out = String(src || "");
   const RGX = [
-    [CL_TSP, "\n", "CL_TSP"], [CL_TBC, "", "CL_TBC"],
-    [CL_TGB, "", "CL_TGB"],   [stp, "f", "stp"],
-    [F_BL, "$1 $2", "FL_BL"]
+    [CL_TSP, "\n", "CL_TSP"], [CL_TBC, "", "CL_TBC"], [CL_TGB, "", "CL_TGB"],
+    [stp, "f", "stp"], [fxS, "f", "fxS"], [F_BL, "$1 $2", "F_BL"]
   ];
   out = rRx(out, RGX, clL); out = clp(out);
   if (dbg) { console.log(`🆗 COMPLETED: ${clL} pCl 🆗`); };
@@ -650,19 +632,15 @@ function pCl(src, clL) {
 // FILTERS //
 
 function cnF(clH, clP, isT) {
-  let h = true, p = true, fm = "", r = "", v = "";
-  const hWc = cWd(clH), pWc = cWd(clP), lbD = rd2(pWc / clP.split("\n").length);
-  const lg = isT ? rNT : rNC, pTp = M_NOP.exec(clP), nLb = ((lbD > 40) || !P_ALB.test(clP)), hLW = hWc < 5, pLW = pWc < 5;
+  let h = true, p = true, r = "", v = "", fm = isT ? fNT : fNC;
+  const hWc = cWd(clH), pWc = cWd(clP), lg = isT ? rNT : rNC, pTp = M_NOP.exec(clP);
+  const hLW = hWc < 5, pLW = pWc < 5, lbD = rd2(pWc / clP.split("\n").length), nLb = ((lbD > 40) || !P_ALB.test(clP));
   if (dev) {
-    console.log(`🚰 CNT. FILTER: 🚰${tb}H. WORD COUNT: ${hWc}${tb}P. WORD COUNT: ${pWc}${tb}LINE BRK. DENSITY: ${lbD}`);
+    console.log(`🚰 CONTENT FILTER: 🚰${tb}H WORD COUNT: ${hWc}${tb}P WORD COUNT: ${pWc}${tb}LINE BREAK DENSITY: ${lbD}`);
   }
   if (nNl(clH) || hLW) { h = false; v = `HTML`; };
   if (nNl(clP) || pLW || pTp || nLb) { p = false; v = `PLAIN TEXT`; };
-  if (!h && !p) {
-    fm = isT ? fNT : fNC;
-    if (dev) { console.log(`🛑 ${lg} 🛑`); };
-    return { h: false, p: false, fm };
-  }
+  if (!h && !p) { if (dev) { console.log(`🛑 ${lg} 🛑`); }; return { h: false, p: false, fm }; };
   if (!h || !p) {
     const rns = [
       { c: hLW || pLW, r: rWc },
@@ -675,13 +653,13 @@ function cnF(clH, clP, isT) {
   return { h, p, fm };
 }
 
-function szF(src, thd, lb) {
+function szF(src, td, lb) {
   const txt = String(src || "");
-  let sz = txt.length, unt = "B";
-  const kb = 1024, mb = 1048576, bMg = (sz > thd) ? true : false;
-  if (sz > kb) { if (sz > mb) { sz = sz / mb; unt = "MB" } else { sz = sz / kb; unt = "KB"; }; };
-  const mSz = `${rd2(sz)} ${unt}`;
-  if (dev) { console.log(bMg ? `🛑 ${lb} MESSAGE SIZE (` + mSz + `) 🛑` : `📐 ${lb} SIZE: ` + mSz); };
+  let sz = txt.length, unt = `B`;
+  const kb = 1024, mb = 1048576, bMg = (sz > td) ? true : false;
+  if (sz > kb) { if (sz > mb) { sz = sz / mb; unt = `MB` } else { sz = sz / kb; unt = `KB`; }; };
+  const mSz = rd2(sz) + ` ` + unt;
+  if (dev) { console.log(bMg ? `🛑 ${lb} MSG. SIZE (${mSz}) 🛑` : `📐 ${lb} SIZE: ${mSz}`); };
   return bMg;
 }
 
@@ -701,29 +679,29 @@ function btF(raw) {
 }
 
 function dSm(clH, clP) {
-  let scm = false, hMCn = 0, pMCn = 0;
+  let scm = false, hMC = 0, pMC = 0;
   clH = pCl(clH, "Detect Scam"); clP = stp(clP);
-  const gtTkn = (txt) => new Set(lCs(String(txt || "")).match(M_TKN) || []);
-  const hTkn = gtTkn(clH), pTkn = gtTkn(clP);
-  hTkn.forEach(token => { if (pTkn.has(token)) hMCn++; });
-  pTkn.forEach(token => { if (hTkn.has(token)) pMCn++; });
-  const htS = hTkn.size, ptS = pTkn.size, hSim = htS ? (hMCn / htS) : 0,
-  pSim = ptS ? (pMCn / ptS) : 0, smM = Math.min(hMCn, pMCn),
-  smT = Math.min(htS, ptS), incl = Math.abs(smM - smT) < 3;
-  if (hSim < 0.4 && pSim < 0.4 && !incl) { scm = true; };
+  const gTk = (txt) => new Set(lCs(String(txt || "")).match(M_TKN) || []);
+  const hTk = gTk(clH), pTk = gTk(clP);
+  hTk.forEach(token => { if (pTk.has(token)) hMC++; });
+  pTk.forEach(token => { if (hTk.has(token)) pMC++; });
+  const htS = hTk.size, ptS = pTk.size, hSi = htS ? (hMC / htS) : 0;
+  const pSi = ptS ? (pMC / ptS) : 0, smM = Math.min(hMC, pMC), smT = Math.min(htS, ptS);
+  const incl = Math.abs(smM - smT) < 3, min = hMC > pMC ? `HTML` : `PLAIN TEXT`;
+  if (hSi < 0.4 && pSi < 0.4 && !incl) { scm = true; };
   if (dev) {
-    console.log(`🔎 INCLUDES 🔎${tb}SMM: ${smM}${tb}SMT: ${smT}${tb}INCLUDES? ${incl}`);
-    console.log(`🔎 SIMILARITY: 🔎${tb}H/P = ${tPt(hSim)}%${tb}P/H = ${tPt(pSim)}%`);
+    console.log(`🔎 INCLUDES: 🔎${tb}TOTAL TOKENS (${min}) = ${smT}${tb}MATCHED TOKENS = ${smM}${tb}INCLUDES? ${incl}`);
+    console.log(`🔎 SIMILARITY: 🔎${tb}H/P = ${tPt(hSi)}%${tb}P/H = ${tPt(pSi)}%`);
   }
   if (dbg) { console.log(`🆗 COMPLETED: dSm 🆗`); };
   return scm;
 }
 
-function ckT(txt, mL) {
+function ckT(txt, mgL) {
   const s = String(txt || ""), cks = [];
   let srt = 0, N = s.length;
   while (srt < N) {
-    let end = Math.min(srt + mL, N);
+    let end = Math.min(srt + mgL, N);
     const pce = s.slice(srt, end).trim();
     if (end < N) { let wst = s.lastIndexOf(" ", end - 1);
     if (wst <= srt) wst = end; end = wst; };
@@ -734,13 +712,13 @@ function ckT(txt, mL) {
 
 // MATCHERS & COUNTERS //
 
-function mBc(src, sbj, sdr) {
+function mBC(src, sbj, sdr) {
   let txt = String(src || ""), bg = false, bgC = false;
   const fPns = [CL_FR, CL_FRC, CL_HR, CL_LLN];
   fPns.forEach(fPn => { lIx(fPn); if (fPn.test(txt)) { bgC = true; }; });
   if (M_BSR.test(sdr) || CL_FRB.test(txt)) { bg = true; };
   if (M_CSJ.test(sbj) || bg)  { bgC = true; };
-  if (dbg) { console.log(`🆗 COMPLETED: mBc 🆗`); };
+  if (dbg) { console.log(`🆗 COMPLETED: mBC 🆗`); };
   return { bg, bgC };
 }
 
@@ -754,9 +732,9 @@ function mBd(wds) {
     { ch: M_OPT.test(wds), r: `IS ONLY PUNCTUATION` },
     { ch: M_PIP.test(wds), r: `CONTAINS PIPE` }
   ];
-  const sMch = slcs.find(slc => slc.ch);
-  if (sMch) {
-    if (dBd) { console.log(`🚫 ${lBT} TEXT ${sMch.r} ("${wds}")`) };
+  const sMc = slcs.find(slc => slc.ch);
+  if (sMc) {
+    if (dBd) { console.log(`🚫 ${lBT} TEXT ${sMc.r} ("${wds}")`) };
     return { bHg: false, bNm: false, bSc: false };
   }
   for (let i = 0; i < wds.length; i++) {
@@ -806,9 +784,8 @@ function mBN(ftr) {
 
 function cBd(src, cBN, bNT) {
   lIx(CH_BD);
-  let mch, lbl = "", bd = { bHC: 0, bSC: 0, eHC: 0, nHC: 0, hLs: 0 };
-  const txt = (cBN ? src.replace(new RegExp(bNT, "g"), "") : src).replace(CL_LK, "").trim();
-  const lLns = (txt.split('\n')).filter(l => (!M_OTG.test(l) && !M_WSO.test(l))).slice(-5).join('\n');
+  let mch, lb = "", bd = { bHC: 0, bSC: 0, eHC: 0, nHC: 0, hLs: 0 };
+  const txt = src.replace(CL_LK, "").trim();
   while ((mch = CH_BD.exec(txt)) !== null) {
     const bdM = `("${mch[0]}")`; let lg = "";
     if (mch.length === 0) { continue; };
@@ -816,22 +793,21 @@ function cBd(src, cBN, bNT) {
       if (dBd) { console.log(`🚫 ${lBT} INLINE NORMAL FONT ("${bdM}")`) };
       continue;
     }
-    const mEj = mch.groups.emj, mNo = mch.groups.num, cn = mch.groups.cnt, clMc = eRx(mch[0]);
-    const cPc = M_HP.test(cn), cLl = (new RegExp(`${clMc}`)).test(lLns), tOy = M_OTG.test(cn),
-    oL = (new RegExp(`${P_OLO.source}${P_WS.source}(${clMc})${P_WS.source}${P_OLC.source}`)).test(txt);
-    const { bHg, bSc } = mBd(cn.split(S_WS));
+    const mEj = mch.groups.emj, mNo = mch.groups.num, cn = mch.groups.cnt, clMc = eRx(mch[0]),
+    tOy = M_OTG.test(cn), { bHg, bSc } = mBd(cn.split(S_WS));
     if (bHg) {
       let isH = true;
       const rls = [
+        { ch: !((new RegExp(`${P_OLO.source}${P_WS.source}(${clMc})${P_WS.source}${P_OLC.source}`)).test(txt)), r: `NOT OWN LINE` },
+        { ch: ((new RegExp(`${clMc}`)).test((txt.split('\n')).filter(l => (!M_OTG.test(l) && !M_WSO.test(l))).slice(-5).join('\n'))), r: `LAST 5 LINES` },
         { ch: tOy, r: `TAGS ONLY` },
-        { ch: cLl, r: `LAST 5 LINES` },
-        { ch: !oL, r: `NOT OWN LINE` },
-        { ch: cPc, r: `SENTENCE PUNCTUATION` }
+        { ch: M_HP.test(cn), r: `SENTENCE PUNCTUATION` },
+        { ch: (CH_SF.test(cn) || CH_SF2.test(cn)), r: `SIGN-OFF` },
+        { ch: (cBN && (new RegExp(bNT)).test(cn)), r: `SIGNATURE` },
       ];
-      const rMch = rls.find(rl => rl.ch);
-      if (rMch) {
-        isH = false; lbl = lBH;
-        if (dBd) { console.log(`🚫 ${lbl} ${rl.r} ("${bdM}")`); };
+      if (rls.find(rl => rl.ch)) {
+        isH = false; lb = lBH;
+        if (dBd) { console.log(`🚫 ${lb} ${rl.r} ("${bdM}")`); };
       }
       if (isH) {
         if (mEj) {
@@ -899,15 +875,15 @@ function cNu(txt) {
 }
 
 function mQa(txt) {
-  let cQa, qaM = txt.match(CH_QA);
+  let cQa = true, qaM = txt.match(CH_QA);
   if (!qaM) { return false; };
   if (dev && qaM) { console.log(`❔ Q&A MATCH(ES): ${cTg(qaM[0])}`); };
   for (let i = 0; i < qaM.length; i++) {
     if (nNl(qaM)) { continue; };
-    const clM = eRx(qaM[0]),
-    M_QA_OLN = new RegExp(`${P_OLO.source}${clM}${P_OLC.source}`, `i`),
-    M_QA_HG = new RegExp(`<(h\\d|a\\b)${P_TSX.source}${clM}${P_TCC.source}`, `i`);
-    cQa = M_QA_HG.test(txt) && M_QA_OLN.test(txt) ? false : true;
+    const clM = eRx(qaM[0]);
+    if ((new RegExp(P_OLO.source + clM + P_OLC.source, `i`)).test(txt) && (new RegExp(P_HLK.source + P_TSX.source + clM + P_TCC.source, `i`)).test(txt)) {
+      cQa = false;
+    }
   }
   if (dbg) { console.log(`🆗 COMPLETED: mQa 🆗`); };
   return cQa;
@@ -919,8 +895,8 @@ function cEt(txt, cBN, bNT) {
     emj: 0, eBl: 0, bSc: 0, bHg: 0, eHg: 0, nHg: 0
   }
   const pCt = { hdg: CH_HTG, hrl: CH_HTG, itc: CH_ITC, eps: CH_EPS, mDh: CH_EMD, emj: CH_EJ };
-  for (const [key, pat] of Object.entries(pCt)) {
-    lIx(pat); const m = txt.match(pat); cts[key] = m ? m.length : 0;
+  for (const [ky, pat] of Object.entries(pCt)) {
+    lIx(pat); const m = txt.match(pat); cts[ky] = m ? m.length : 0;
   }
   const { bSC, bHC, eHC, nHC, hLs } = cBd(txt, cBN, bNT), { blC, eBlC, ejC } = cBl(txt);
   Object.assign(cts, { nLs: cNu(txt), bSc: bSC, bHg: bHC, bLs: blC, eHg: eHC, nHg: nHC, eBl: eBlC });
@@ -931,22 +907,22 @@ function cEt(txt, cBN, bNT) {
 }
 
 function cSn(sns) { return sns.map(sn => clp(cTg(sn[0]))); };
-function mAr(txt, rgx) { return Array.from(txt.matchAll(rgx)); };
+function mAr(txt, rx) { return Array.from(txt.matchAll(rx)); };
 
-function mFl(txt, cMs, cWs, ftr) {
-  const ptns = [CH_EJV, CH_SF, CH_PH, CH_QA];
-  ptns.forEach(ptn => lIx(ptn));
-  const snps = { phs: [], qa: [], snf: null, eEj: null, wst: null, msT: null },
-  flgs = { msT: cMs, wst: cWs },
-  cEnv = CH_EJV.exec(txt), cQa = mQa(txt), snOff = CH_SF.exec(ftr);
-  if (cEnv) { snps.eEj = cTg(cEnv[0]); };
-  if (snOff) { snps.snf = cTg(snOff[1]); };
-  for (const [key, flg] of Object.entries(flgs)) { if (flg) snps[key] = true; };
-  const pcM = mAr(txt, CH_PH), qaM = mAr(txt, CH_QA);
-  if (pcM.length) { snps.phs = cSn(pcM); };
-  if (cQa && qaM.length) { snps.qa = cSn(qaM); };
+function mFl(txt, cMs, cWs, hFr) {
+  const pns = [CH_EJV, CH_SF, CH_PH, CH_QA];
+  pns.forEach(pn => lIx(pn));
+  const phM = mAr(txt, CH_PH), qaM = mAr(txt, CH_QA), cQa = mQa(txt),
+  env = CH_EJV.exec(txt), snf = CH_SF.exec(hFr);
+  const sns = { phs: [], qa: [], snf: null, evj: null, wst: null, mst: null },
+  fls = { mst: cMs, wst: cWs };
+  for (const [ky, fl] of Object.entries(fls)) { if (fl) sns[ky] = true; };
+  if (env) { sns.evj = cTg(env[0]); };
+  if (snf) { sns.snf = cTg(snf[1]); };
+  if (phM.length) { sns.phs = cSn(phM); };
+  if (cQa && qaM.length) { sns.qa = cSn(qaM); };
   if (dbg) { console.log(`🆗 COMPLETED: mFl 🆗`); };
-  return snps;
+  return sns;
 }
 
 function bAR(ck) {
@@ -992,7 +968,7 @@ function saE(src) {
 
 function gMg(e) {
   if (!e || !e.gmail || !e.gmail.accessToken) {
-    throw new Error("⛔ MISSING GMAIL ACCESS TOKEN.");
+    throw new Error(`⛔ MISSING GMAIL ACCESS TOKEN.`);
   }
   GmailApp.setCurrentMessageAccessToken(e.gmail.accessToken);
   const mId = e.gmail.messageId, msg = GmailApp.getMessageById(mId),
@@ -1020,22 +996,23 @@ function pMg(e) {
   }
   const hWc = cWd(rwH), pWc = cWd(rwP);
   if (hWc < 5 && pWc < 5) { return { ...dta, fm: fNC }; };
-  ({ out: clH, cMs, cWs, isTh } = cHC(rwH, "HTML"));
+  ({ out: clH, cMs, cWs, thH } = cHC(rwH, "HTML"));
   clH = clH.replace(CL_DTY, "");
-  ({ cnP: clP, isTp } = cPC(rwP, "Plain Text"));
+  ({ cnP: clP, phH } = cPC(rwP, "Plain Text"));
   const mpH = CL_DTY.test(rwP) ? true : false;
-  if (mpH) { clP = clP.replace(P_ATG, ""); };
-  const isT = (isTh || isTp) ? true : false;
+  if (mpH) { clP = cTg(clP); };
+  const isT = (thH || phH) ? true : false;
   if (dbg) { ckL(`📝 HTML`, clH); ckL(`📝 PLAIN TEXT`, clP); };
   ({ h, p, fm: fm } = cnF(clH, clP, isT));
   if (!h && !p) { return { ...dta, fm }; };
   if (h && p && dSm(clH, clP)) {
-    if (dev) { console.log(lSm); }; return { ...dta, fm: fSm };
+    if (dev) { console.log(lSm); };
+    return { ...dta, fm: fSm };
   }
   const useP = !h && p ? true : false;
   if (useP && dev) { console.log(lNH); };
   const prM = useP ? clP : clH;
-  const { bg, bgC } = mBc(prM, dta.sbj, dta.sdr);
+  const { bg, bgC } = mBC(prM, dta.sbj, dta.sdr);
   if (dev) {
     console.log(`❓ BLOG/CO? ${bgC}`);
     ckL("📝 PRECLEAN CONTENT", prM);
@@ -1046,8 +1023,8 @@ function pMg(e) {
     if (dev) { console.log(`💵 SETTLEMENT MATCH: ${slm}`); };
   }
   ({ txt: mCn, hFr } = cHF(prM, stl));
-  const snps = mFl(prM, cMs, cWs, hFr), { cBN, bNT } = mBN(hFr);
-  if (cBN) { snps.bNm = true; };
+  const sns = mFl(prM, cMs, cWs, hFr), { cBN, bNT } = mBN(hFr);
+  if (cBN) { sns.bNm = true; };
   const cts = cEt(prM, cBN, bNT);
   mCn = useP ? stp(mCn) : pCl(mCn, "Preclean Message");
   const wdC = cWd(mCn);
@@ -1056,25 +1033,32 @@ function pMg(e) {
     console.log(`📐 SAPLING WORD COUNT: ${wdC}`);
   }
   if (dbg) { console.log(`🆗 COMPLETED: pMg 🆗`); };
-  return { ...dta, mCn, bg, bgC, cBN, bNT, cts, snps, wdC };
+  return { ...dta, mCn, bg, bgC, cBN, bNT, cts, sns, wdC };
+}
+
+function fxS(txt) {
+  const ps = [". ", "! ", "? "];
+  ps.forEach(p => {
+    let scs = txt.split(p);
+    scs = scs.map(sc => sc.replace(F_SLB, " "));
+    txt = scs.join(p);
+  });
+  return txt;
 }
 
 function gPh(src) {
-  return src.map(s => {
-    const t = String(s || "");
-    return CH_PHE.test(t) ? t : `${t}...`;
-  }).filter(Boolean);
+  return src.map(s => { const t = String(s || ""); return CH_PHE.test(t) ? t : `${t}...`; }).filter(Boolean);
 }
 
 function gCS(dta) {
-  const { sbj, sdr, snps, bg, bgC } = dta;
-  let { bNm, eEj, wst, msT, snf } = snps, phM = null, qMg = null;
-  const phS = snps.phs || [], qaS = snps.qa || [], fCs = { ...dta.cts };
+  const { sbj, sdr, sns, bg, bgC } = dta;
+  let { bNm, evj, wst, mst, snf } = sns, phM = null, qMg = null;
+  const phS = sns.phs || [], qaS = sns.qa || [], fCs = { ...dta.cts };
   if ((bgC) && !CH_SF2) { bNm = null; };
-  if (eEj && fCs.emj > 1) { fCs.emj--; };
+  if (evj && fCs.emj > 1) { fCs.emj--; };
   if (M_AZO.test(sbj) || M_AZN.test(sdr)) { fCs.eps = 0 };
   const cln = (t) => t ? clp(t) : null;
-  const sfX = cln(snf), evX = cln(eEj), sPh = gPh(phS), sQa = gPh(qaS);
+  const sfX = cln(snf), evX = cln(evj), sPh = gPh(phS), sQa = gPh(qaS);
   if (sPh.length === 1) {
     phM = `Phrase(s): "${sPh[0]}"`;
   } else if (sPh.length > 1) {
@@ -1101,7 +1085,7 @@ function gCS(dta) {
     { vl: fCs.nLs, lb: 'Numbered Lists:', scr: 3 },
     { vl: bNm, txt: `Bold Name in Signature`, scr: 20 },
     { vl: evX, txt: `Envelope Emoji: ${evX}`, scr: 50 },
-    { vl: msT, txt: `Mailsuite Tracking`, scr: 80 },
+    { vl: mst, txt: `Mailsuite Tracking`, scr: 80 },
     { vl: sfX, txt: `Sign-off: "${sfX}"`, scr: 90 },
     { vl: wst, txt: `Wisestamp Signature`, scr: 80 },
     { vl: phM, txt: phM, scr: 70 },
@@ -1109,23 +1093,22 @@ function gCS(dta) {
   ];
   const tgr = []; let cSr = 0, pts = 0;
   rules.forEach(r => {
-    if (r?.vl) {
-      pts++; cSr += r.scr;
-      tgr.push(r.lb ? ` 🔸 ${r.lb} ${r.vl}` : ` 🔸 ${r.txt}`);
-    }
+    if (r?.vl) { pts++; cSr += r.scr; tgr.push(` 🔸 ` + (r.lb ? (r.lb + ` ` + r.vl) : r.txt)); };
   });
   cSr = Math.min(100, (Math.sqrt(cSr * (pts * 10))));
-  if (dev) { console.log(`📐 MULTIPLICATION POINTS: ${pts}\n📐 SCANE SUBTOTAL: ${rd2(cSr)}`); };
-  const bDc = bg ? cSr * 0.20 : 0; cSr -= bDc;
-  if (dev) { console.log(`❓ BLOG? ${bg}\n➖ BLOG DISCOUNT: ${rd2(bDc)}`); };
-  const flgs = {
-    phs: phS.length > 0, qa: qaS.length > 0, snf: !!snf,
-    bNm: !!bNm, eEj: !!eEj, wst: !!wst, msT: !!msT, bg, bgC
+  if (dev) { console.log(`📐 POINTS: ${pts}\n📐 SCANE SUBTOTAL: ${rd2(cSr)}`); };
+  if (bg) {
+    const bDc = cSr * 0.20; cSr -= bDc;
+    if (dev) { console.log(`➖ BLOG DISCOUNT: ${rd2(bDc)}`); };
   }
-  const eSp = { phs: phS, qa: qaS, snf: sfX, eEj: evX };
+  const fls = {
+    phs: phS.length > 0, qa: qaS.length > 0, snf: !!snf,
+    bNm: !!bNm, evj: !!evj, wst: !!wst, mst: !!mst, bg, bgC
+  }
+  const eSp = { phs: phS, qa: qaS, snf: sfX, evj: evX };
   const smy = `🚩 AI ELEMENTS FOUND: 🚩\n` + (tgr.length ? tgr.map(t => t).join("\n") : `None`);
   if (dbg) { console.log(`🆗 COMPLETED: gCS 🆗`); }
-  return { smy, tgr, flgs, snps: eSp, cts: fCs, cSr };
+  return { smy, tgr, fls, sns: eSp, cts: fCs, cSr };
 }
 
 function map(pct) {
