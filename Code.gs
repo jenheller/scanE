@@ -2,7 +2,7 @@
 
 // LOG DEBUG SWITCHES //
 
-const dev = true, dbg = false, dCl = false, dBd = false;
+const dev = false, dbg = false, dCl = false, dBd = false;
 
 // CACHED API KEY //
 
@@ -63,7 +63,7 @@ var M_LI = /(<li[^>]*?>([\S\s]+?)<\/li>)/g;
 var M_NOP = /your\semail\ssoftware\scan't\sdisplay\sHTML\semails|this\sis\s(?:a|the)\s.*?\stemplate/i;
 var M_NAT = /logo|badge|custom|icon|_|\.[a-z]{3,4}/i;
 var M_ONU = /^[\d\s]+$/;
-var M_OPT = /^[\p{P}\s]+/u;
+var M_OPT = /^[\p{P}\s]+$/u;
 var M_OTG = /^\s*(\s*<\/?[^<>]+?>\s*)+\s*$/;
 var M_PAF = /<\/html>([\S\s]+?)$/i;
 var M_PBF = /^([\S\s]+?)<(?:doctype|html|head|style|body)/i;
@@ -123,7 +123,7 @@ var P_PCT = /[,:\?!@\(\);<>\/\\=\|]/;
 var P_QTS = /["']/;
 var P_SF1 = /(?:(?:(?:(?:(?:Kind|Warm)(?:est|)|Best|Thank(?:s|\s*[Yy]ou)\s*(?:and|&)\s*([Kk]ind)?)\s*[Rr]egards?)|Best|Warmly|Regards))/;
 var P_SF2 = /Sincerely(?: [Yy]ours|)|Thank(?:s| [Yy]ou)(?: for [\w ]+?)|Yours(?: [Tt]ruly|Sincerely)?|Signed/;
-var P_SFP = /[:!\.\?]/;
+var P_SPC = /[:!\.\?,]/;
 var P_SNC = /[\w\p{P}]+?/u;
 var P_SEQ = /\s*=\s*/;
 var P_STB = /[ \t]*/;
@@ -132,7 +132,7 @@ var P_TAO = /<a>/i;
 var P_TCC = /<\/\1>/;
 var P_TSC = /\b\s*/;
 var P_TSO = /<\/?\b/;
-var P_TSP = /p|div|h\d|ul|ol|li|button|img|hrl/gi;
+var P_TSP = /p|div|h\d|ul|ol|li|button|img|hr/gi;
 var P_TSR = /table|tr|th|tbody|thead|br|blockquote/gi;
 var P_TSX = /[^>\/]*?>/;
 var P_ULL = /[A-Z][a-z]/;
@@ -146,19 +146,20 @@ var S_WS = /\s+/g;
 // STRINGS //
 
 var CH_BD = new RegExp(`(?<emj>${CH_EJ.source} *)?${P_BDO.source}(?<num>[${P_NUL.source}\\. +)?(?<cnt>${P_ACN.source})${P_BDC.source}`, `gui`);
-var CH_BNU = new RegExp(`(?:${P_SF1.source}|${P_SF2.source})${P_SFP.source}?(?:${P_ATG.source}|)${P_ALB.source}+${P_BDO.source}(${P_ACN.source})${P_BDC.source}`, `gim`);
+var CH_BNU = new RegExp(`(?:${P_SF1.source}|${P_SF2.source})${P_SPC.source}?(?:${P_ATG.source}|)${P_ALB.source}+${P_BDO.source}(${P_ACN.source})${P_BDC.source}`, `gim`);
 var CH_BEJ = new RegExp(`${P_LBM.source}(${CH_EJ.source}${P_WS.source}[A-Za-z\d]${P_NLB.source}${P_NEJ.source}+?)${P_LBM.source}`, `gumi`);
 var CH_BLN = new RegExp(`${P_EJH.source}${CH_EJ.source} ? *${P_LRN.source}`, `u`);
 var CH_BLT = new RegExp(`<ul${P_TSX.source}`, `gi`);
 var CH_BLX = new RegExp(`${P_LBM.source}(${P_BL.source})${P_WS.source}${P_NLB.source}+$${P_ALB.source}`, `gmi`);
+var CH_HRL = new RegExp(`<hr${P_TSX.source}`, `gi`);
 var CH_HTG = new RegExp (`<h\\d\\b${P_TSX.source}`, `gi`);
 var CH_ITC = new RegExp(`<(?:\\b(?:em|i)\\b|${P_NTG.source}font-style:${P_WS.source}italic)${P_TSX.source}`, `gi`);
 var CH_NUT = new RegExp(`<ol${P_TSX.source}`, `gi`);
 var CH_NUX = new RegExp(`${P_LBM.source}${P_STB.source}[${P_NUL.source}[\\.\\)]\\s+${P_NLB.source}+?(?:$|${P_LE.source})`, `gm`);
-var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)${P_WS.source}(?:absolutely|completely)${P_WS.source}(?:right|correct)|that(?:${P_APH.source}s|\\sis)${P_WS.source}a?${P_WS.source}(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)${P_WS.source}(?:clarify|be\\sclear)|would\\syou\\sbe${P_WS.source}(?:interested\\sin|open\\sto)|no${P_WS.source}(?:strings\\sattached|pressure)|totally\\sfair|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)${P_WS.source}(?:so|very|)${P_WS.source}(?:much|)\\sfor\\syour${P_WS.source}(?:kind|thoughtful|kind${P_WS.source}(?:and|&|&amp;)\\sthoughtful)${P_WS.source}(?:reply|rsps|message|email|question)|i\\stake${P_WS.source}(?:full|total|complete|)${P_WS.source}responsibility|i\\sjust${P_WS.source}(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SFP.source}?`, `gui`);
+var CH_PH = new RegExp(`(?:you(?:\\sare|${P_APH.source}re)${P_WS.source}(?:absolutely|completely)${P_WS.source}(?:right|correct)|that(?:${P_APH.source}s|\\sis)${P_WS.source}a?${P_WS.source}(?:great|good)\\squestion|i\\scompletely\\sunderstand|(?:just\\sto|let${P_APH.source}s)${P_WS.source}(?:clarify|be\\sclear)|would\\syou\\sbe${P_WS.source}(?:interested\\sin|open\\sto)|no${P_WS.source}(?:strings\\sattached|pressure)|totally\\sfair|that(?:\\sis|${P_APH.source}s)\\son\\sme|thank(?:s|\\syou)${P_WS.source}(?:so|very|)${P_WS.source}(?:much|)\\sfor\\syour${P_WS.source}(?:kind|thoughtful|kind${P_WS.source}(?:and|&|&amp;)\\sthoughtful)${P_WS.source}(?:reply|rsps|message|email|question)|i\\stake${P_WS.source}(?:full|total|complete|)${P_WS.source}responsibility|i\\sjust${P_WS.source}(?:wanted|had)\\sto|(?:y[eu]p|got\\sit)${P_WS.source}(?:${CH_EMD.source}))${P_SPC.source}?`, `gui`);
 var CH_QA = new RegExp(`(?:Short answer|Why|The (?:${P_SNC.source} *){1,2})\\? *[A-Z](?:${P_SNC.source} *){1,10}(?:${P_ATG.source})?\\.`, `gu`);
-var CH_SF = new RegExp(`${P_LBM.source}(${P_SF1.source}${P_SFP.source}?)${P_LEM.source}`, `m`);
-var CH_SF2 = new RegExp(`${P_LBM.source}(${P_SF2.source}${P_SFP.source}?)${P_LEM.source}`, `im`);
+var CH_SF = new RegExp(`${P_LBM.source}(${P_SF1.source}${P_SPC.source}?)${P_LEM.source}`, `m`);
+var CH_SF2 = new RegExp(`${P_LBM.source}(${P_SF2.source}${P_SPC.source}?)${P_LEM.source}`, `im`);
 var CL_CLB = new RegExp(`(?:${P_STB.source}${P_ALB.source})+${P_STB.source}|[ \\t]{8,}`, `g`);
 var CL_CMT = new RegExp(`<!(?${P_DTP.source})${P_DSH.source} *\\[?${P_CMI.source}\\]? *${P_DSH.source}>${P_DSH.source}>?|\\/\\*\\[?${P_CMI.source}\\*\\/|^ *${P_CMI.source} *-{2}>$`, `gim`)
 var CL_DTY = new RegExp(`<${P_WS.source}${P_DTP.source}${P_NTG.source}>`, `i`);
@@ -181,7 +182,7 @@ var CL_TSP = new RegExp(`${P_TSO.source}(?:${P_TSP.source})${P_TSC.source}${P_TS
 var CL_TSR = new RegExp(`${P_TSO.source}(?:${P_TSR.source})${P_TSC.source}${P_NTG.source}${P_WS.source}\\/?>`, `gi`);
 var CL_TDE = new RegExp(`${P_WS.source}<\\/?td${P_TSX.source}${P_WS.source}(?:<\\/?td${P_TSX.source})?${P_WS.source}(?<ej1>${P_WS.source}(?:${CH_EJ.source}|${P_BL.source}))${P_WS.source}<\\/?td${P_TSX.source}${P_WS.source}(?:<\\/?td${P_TSX.source})?${P_WS.source}`, `gui`);
 var CL_TDT = new RegExp (`<\\/?td${P_TSX.source}`, `gui`);
-var CL_UHM = new RegExp(`<(?!\\/?(?:\\b(b|strong|i|em|ul|ol|li|h[1-9]|hrl|p|div|span|a|td)\\b))${P_TSX.source}`, `gi`);
+var CL_UHM = new RegExp(`<(?!\\/?(?:\\b(b|strong|i|em|ul|ol|li|h[1-9]|hr|p|div|span|a|td)\\b))${P_TSX.source}`, `gi`);
 var D_LB = new RegExp(`(?:\\r|${CL_UDL.source})`, `gu`);
 var D_LTR = new RegExp(`&(${P_ALR.source}${P_LRN.source}+);?`, `g`);
 var D_MD = new RegExp(`${P_DCD.source}?96`, `g`);
@@ -192,7 +193,7 @@ var F_IEJ = new RegExp(`${P_ALB.source}*<img${P_WS.source}(?:data|class)[\\-=]em
 var F_NU = new RegExp(`([0-9]{1,2}\\.)${P_WS.source}${P_ALB.source}+${P_WS.source}(${P_ALR.source})`, `g`);
 var F_PNC = new RegExp(`(${P_ALR.source}+)\\s+([\\.!\\?,])`, `g`);
 var F_SBP = new RegExp(`<\\b(sub|sup)\\b${P_TSX.source}(${P_NTG.source})${P_TCC.source}`, `gi`);
-var F_SLB = new RegExp(`(?<!${P_SFP.source}|${P_BL.source}) *${P_ALB.source} *(?![A-Z]||${P_BL.source}|\\d+?\\s[A-Z])`, `g`);
+var F_SLB = new RegExp(`(?<!${P_SPC.source}|${P_BL.source}) *${P_ALB.source} *(?![A-Z]|${P_BL.source}|\\d+?\\s[A-Z])`, `g`);
 var F_TSP = new RegExp(`(<\\/?${P_NTG.source})${P_WS.source}(${P_ALB.source}+${P_WS.source}>)`, `gi`);
 var M_ATT= new RegExp(`(${P_WDD.source})${P_SEQ.source}(?:(${P_QTS.source})(${P_ACN.source})\\2|([^\\s>]+))(?=\\s+${P_WDD.source}${P_WS.source}=|${P_WS.source}\\/?>|$)`, `gi`);
 var M_HP = new RegExp(`${P_SNC.source}[\\.\\!\\?]`);
@@ -263,7 +264,7 @@ function ckL(lb, dta) {
 }
 
 function rRx(out, chs, clL) {
-  if (clL === "HTML" || clL === "Plain Text") {
+  if (clL === "HTML" || clL === "Plain Text" || clL === "Postclean") {
     chs.forEach(([p, r, l]) => {
       out = (r === "f") ? p(out) : out.replace(p, r);
       if (dbg) { console.log(`🆗 COMPLETED: ${l} 🆗`) };
@@ -489,11 +490,11 @@ function cHC(htm, clL) {
 function cPC(ptx, clL) {
   if (nNl(ptx)) {
     if (dbg) { console.log(`🛑 NO PLAIN TEXT: SKIPPING PLAIN CLEANING 🛑`); };
-    return { out: ptx, phH: false };
+    return { out: ptx, thP: false };
   }
   let out = String(ptx || "");
-  const phH = CL_PVS.test(out);
-  if (phH) { out = out.replace(CL_PVS, "$1") };
+  const thP = CL_PVS.test(out);
+  if (thP) { out = out.replace(CL_PVS, "$1") };
   out = cTg(out);
   const chs = [
     [CL_UDZ, "", "CL_UDZ"],   [CL_UDS, " ", "CL_UDS"],  [CL_UDD, "-", "CL_UDD"],
@@ -507,7 +508,7 @@ function cPC(ptx, clL) {
   const pWC = cWd(out);
   out = cPL(out, pWC); out = clp(out);
   if (dbg) { console.log(`🆗 COMPLETED: cPC 🆗`); };
-  return { cnP: out, phH };
+  return { cnP: out, thP };
 }
 
 function sHF(txt) {
@@ -526,6 +527,17 @@ function cLT(txt) { return CL_LLN.test(txt); };
 function fLn(ln, rx) { return ln.filter(w => rx.test(w)) };
 function jHF(cks) { let jd = ""; for (let i = 0; i < cks.length; i++) { jd += cks[i][0] + cks[i][1]; }; return jd; };
 
+function fxS(txt) {
+  const ps = [". ", "! ", "? "];
+  ps.forEach(p => {
+    let scs = txt.split(p);
+    scs = scs.map(sc => sc.replace(F_SLB, " "));
+    txt = scs.join(p);
+  });
+  if (dbg) { console.log(`🆗 COMPLETED: fXs 🆗`); };
+  return txt;
+}
+
 function mSI(l1, l2) {
   let lMc = false;
   if (l1.length > 0) {
@@ -540,15 +552,14 @@ function mSI(l1, l2) {
 }
 
 function cHF(src, stl) {
-  let txt = src.trim();
-  txt = fxS(txt);
-  const lns = sHF(txt).filter(ln => !M_OTG.test(ln[0])).filter(ln => !M_OPT.test(ln[0]));
-  const lsL = lns.length, hEd = Math.min((lsL * 0.3), lsL), fSt = Math.max(hEd, lsL - (lsL * 0.8)),
-  bdy = jHF(lns.slice(hEd, fSt)).replace(F_PRD, "."), hFr = jHF(lns.slice(fSt));
+  let txt = fxS(src.trim());
+  const lns = sHF(txt).filter(ln => !M_OTG.test(ln[0])).filter(ln => !M_OPT.test(ln[0])),
+  lsL = lns.length, hEd = Math.min((lsL * 0.2), lsL), fSt = Math.max(hEd, lsL - (lsL * 0.8));
+  const hFr = jHF(lns.slice(fSt));
   let hdr = lns.slice(0, hEd), ftr = lns.slice(fSt);
   hdr = hdr.map(ln => [cTg(ln[0]).replace(F_PRD, "."), ln[1]]);
   ftr = ftr.map(ln => [cTg(ln[0]).replace(F_PRD, "."), ln[1]]);
-  const wdC = cWd(jHF(hdr) + `\n` + bdy +`\n` + jHF(ftr));
+  const wdC = cWd(jHF(hdr) + `\n` + jHF(ftr));
   if (dev) { console.log(`📐 PRECLEAN WORD COUNT: ${wdC}\n📐 LINES: ${lsL}`); };
   if (wdC < 30) { return { txt, ftr: txt, hFr: txt }; };
   const hps = [CL_HR, CL_HFF];
@@ -607,13 +618,13 @@ function cHF(src, stl) {
     }
   });
   ftr = jHF(ftr);
-  const hB = (hdr + `\n` + bdy), prndWc = cWd(hB) + cWd(ftr);
+  const prndWc = cWd(hdr) + cWd(ftr);
   if (dev) { console.log(`📐 PRUNED WORD COUNT: ${prndWc}`); };
   if (prndWc <= (wdC / 4)) {
     if (dev) { console.log(`🛑 OVER-PRUNED: USING SAFE FOOTER 🛑`); };
     ftr = sF;
   }
-  txt = clp(hB + `\n` + ftr);
+  txt = clp(hdr + `\n` + ftr);
   if (dbg) { console.log(`🆗 COMPLETED: cHF 🆗`); };
   return { txt, hFr };
 }
@@ -894,7 +905,7 @@ function cEt(txt, cBN, bNT) {
     bLs: 0, nLs: 0, hdg: 0, hrl: 0, itc: 0, eps: 0, mDh: 0,
     emj: 0, eBl: 0, bSc: 0, bHg: 0, eHg: 0, nHg: 0
   }
-  const pCt = { hdg: CH_HTG, hrl: CH_HTG, itc: CH_ITC, eps: CH_EPS, mDh: CH_EMD, emj: CH_EJ };
+  const pCt = { hdg: CH_HTG, hrl: CH_HRL, itc: CH_ITC, eps: CH_EPS, mDh: CH_EMD, emj: CH_EJ };
   for (const [ky, pat] of Object.entries(pCt)) {
     lIx(pat); const m = txt.match(pat); cts[ky] = m ? m.length : 0;
   }
@@ -998,10 +1009,10 @@ function pMg(e) {
   if (hWc < 5 && pWc < 5) { return { ...dta, fm: fNC }; };
   ({ out: clH, cMs, cWs, thH } = cHC(rwH, "HTML"));
   clH = clH.replace(CL_DTY, "");
-  ({ cnP: clP, phH } = cPC(rwP, "Plain Text"));
+  ({ cnP: clP, thP } = cPC(rwP, "Plain Text"));
   const mpH = CL_DTY.test(rwP) ? true : false;
   if (mpH) { clP = cTg(clP); };
-  const isT = (thH || phH) ? true : false;
+  const isT = (thH || thP) ? true : false;
   if (dbg) { ckL(`📝 HTML`, clH); ckL(`📝 PLAIN TEXT`, clP); };
   ({ h, p, fm: fm } = cnF(clH, clP, isT));
   if (!h && !p) { return { ...dta, fm }; };
@@ -1014,8 +1025,8 @@ function pMg(e) {
   const prM = useP ? clP : clH;
   const { bg, bgC } = mBC(prM, dta.sbj, dta.sdr);
   if (dev) {
-    console.log(`❓ BLOG/CO? ${bgC}`);
     ckL("📝 PRECLEAN CONTENT", prM);
+    console.log(`❓ BLOG/CO? ${bgC}`);
   }
   const slm = M_SLT.exec(dta.sbj);
   if (slm) {
@@ -1026,7 +1037,7 @@ function pMg(e) {
   const sns = mFl(prM, cMs, cWs, hFr), { cBN, bNT } = mBN(hFr);
   if (cBN) { sns.bNm = true; };
   const cts = cEt(prM, cBN, bNT);
-  mCn = useP ? stp(mCn) : pCl(mCn, "Preclean Message");
+  mCn = useP ? stp(mCn) : pCl(mCn, "Postclean");
   const wdC = cWd(mCn);
   if (dev) {
     ckL(`📝 POSTCLEAN CONTENT`, mCn);
@@ -1034,16 +1045,6 @@ function pMg(e) {
   }
   if (dbg) { console.log(`🆗 COMPLETED: pMg 🆗`); };
   return { ...dta, mCn, bg, bgC, cBN, bNT, cts, sns, wdC };
-}
-
-function fxS(txt) {
-  const ps = [". ", "! ", "? "];
-  ps.forEach(p => {
-    let scs = txt.split(p);
-    scs = scs.map(sc => sc.replace(F_SLB, " "));
-    txt = scs.join(p);
-  });
-  return txt;
 }
 
 function gPh(src) {
